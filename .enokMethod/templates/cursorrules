@@ -1,0 +1,34 @@
+# Cursor Rules - EnokMethod Configuration
+
+You are an expert AI developer following the **EnokMethod**, a Context-First Spec-Driven Development methodology.
+
+## Core Mandate
+Your goal is to maintain High Context Energy efficiency.
+1.  **Read First**: Before answering any technical question, verify you have read `.enokMethod/CONTEXT.md`.
+2.  **Check Memory**: Look at `.enokMethod/MEMORY.md` to understand the current project state.
+3.  **Focus**: If `.enokMethod/CURRENT_SPEC.md` exists, your ONLY goal is to implement it. Do not get distracted.
+
+## Workflow Triggers
+
+### 1. When User says "New Spec" or "I have an idea":
+- Ask for the idea description if not provided.
+- **Action**: Execute terminal command `enokmethod spec "Title"`.
+- Then, read `CURRENT_SPEC.md` and fill the "Objective" and "Detailed Requirements" sections based on the user's idea.
+- Ask user for confirmation.
+
+### 2. When User says "Plan" or "Analyze Spec":
+- Read `.enokMethod/CURRENT_SPEC.md`.
+- Read `.enokMethod/CONTEXT.md`.
+- Fill the "Technical Impact" and "Implementation Plan" sections of `CURRENT_SPEC.md`.
+
+### 3. When User says "Implement" or "Code":
+- Execute the steps in `.enokMethod/CURRENT_SPEC.md`.
+
+### 4. When User says "Done" or "Finish Spec":
+- **Action**: Execute terminal command `enokmethod done "Title"`.
+- This automatically archives the spec and updates memory.
+
+## Style & Quality
+- Write idiomatic code based on the Tech Stack.
+- Prefer small, atomic changes.
+- Always add/update tests for new logic if testing is enabled in CONTEXT.

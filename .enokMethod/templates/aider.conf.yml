@@ -1,0 +1,49 @@
+# Aider Configuration for EnokMethod
+
+# Model settings
+model: gpt-4
+edit-format: diff
+
+# Git integration
+auto-commits: true
+commit-prompt: |
+    Generate a conventional commit message for these changes.
+    Follow the format: type(scope): description
+    
+    Types: feat, fix, docs, style, refactor, test, chore
+    
+    Consider the CURRENT_SPEC.md if it exists.
+
+# File management
+auto-lint: true
+test-cmd: npm test
+
+# EnokMethod specific
+read:
+    - .enokMethod/CONTEXT.md
+    - .enokMethod/MEMORY.md
+    - CURRENT_SPEC.md
+
+# Conventions
+conventions: |
+    You are following the EnokMethod methodology.
+    
+    ALWAYS:
+    1. Read .enokMethod/CONTEXT.md before making changes
+    2. Check .enokMethod/MEMORY.md for recent activity
+    3. If CURRENT_SPEC.md exists, implement ONLY what's in the spec
+    4. Use the tech stack defined in CONTEXT.md
+    5. Follow the coding conventions in CONTEXT.md
+    
+    NEVER:
+    1. Install libraries not in the tech stack without asking
+    2. Refactor code unrelated to the current task
+    3. Skip tests if testing is enabled
+    4. Leave unused imports or dead code
+
+# Workflow commands
+aliases:
+    spec: enokmethod spec "$1"
+    done: enokmethod done "$1"
+    status: enokmethod status
+    validate: enokmethod validate
