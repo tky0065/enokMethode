@@ -156,22 +156,7 @@ Vérifie:
 - [ ] `enokmethod init --interactive` : Guide l'utilisateur pas à pas
 - [ ] `enokmethod spec` (sans titre) : Demande le titre interactivement
 
-**Dépendances**:
 
-```json
-{
-    "inquirer": "^9.0.0"
-}
-```
-
-**Exemple de workflow interactif**:
-
-```
-? Quel est le nom de votre projet? › my-app
-? Quel type de projet? › Next.js / FastAPI / Flutter / Autre
-? Quelle base de données? › PostgreSQL / MongoDB / Supabase / Aucune
-? Voulez-vous activer les tests? › Oui / Non
-```
 
 ### 2.2 Amélioration de `init`
 
@@ -194,45 +179,8 @@ Vérifie:
 
 ### 3.1 Nouveaux Templates
 
-- [ ] **DECISIONS.md** : Log des décisions d'architecture (ADR - Architecture Decision Records)
-- [ ] **GLOSSARY.md** : Termes métier du projet
 - [ ] **PROMPTS_CUSTOM.md** : Prompts personnalisés par projet
 
-**Structure DECISIONS.md**:
-
-```markdown
-# Architecture Decision Records
-
-## ADR-001: [Titre de la décision]
-
-- **Date**: YYYY-MM-DD
-- **Statut**: Accepté / Rejeté / Déprécié
-- **Contexte**: Pourquoi cette décision était nécessaire
-- **Décision**: Ce qui a été décidé
-- **Conséquences**: Impact de cette décision
-```
-
-**Structure GLOSSARY.md**:
-
-```markdown
-# Glossaire du Projet
-
-## Termes Métier
-
-- **Terme 1**: Définition
-- **Terme 2**: Définition
-
-## Termes Techniques
-
-- **Pattern X**: Explication
-```
-
-### 3.2 Presets par Stack
-
-- [ ] Preset **Next.js** (avec structure recommandée)
-- [ ] Preset **FastAPI** (architecture Python)
-- [ ] Preset **Flutter** (mobile)
-- [ ] Preset **Monorepo** (pnpm/turborepo)
 
 **Chaque preset inclut**:
 
@@ -241,12 +189,6 @@ Vérifie:
 - Conventions de nommage spécifiques
 - Exemples de SPEC.md adaptés
 
-**Fichiers à créer**:
-
-- `.enokMethod/presets/nextjs.json`
-- `.enokMethod/presets/fastapi.json`
-- `.enokMethod/presets/flutter.json`
-- `.enokMethod/presets/monorepo.json`
 
 ### 3.3 Amélioration des Prompts Agents
 
