@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.env
+npm-debug.log
+.enokMethod/
+!/.enokMethod/templates/
+!/.enokMethod/prompts/
+demo_test/
+test_detect/
