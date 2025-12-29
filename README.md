@@ -1,4 +1,4 @@
-# EnokMethod - Context-First Spec-Driven Development -
+# EnokMethod - Context-First Spec-Driven Development - CFSD
 
 [![npm version](https://img.shields.io/npm/v/enokmethod.svg)](https://www.npmjs.com/package/enokmethod)
 [![Tests](https://github.com/tky0065/enokMethode/workflows/Tests/badge.svg)](https://github.com/tky0065/enokMethode/actions/workflows/test.yml)
@@ -129,7 +129,7 @@ enokmethod validate                 # Validate project structure
 
 ### Git Integration
 
-```bash
+C```bash
 enokmethod commit [-m <msg>]        # Generate conventional commit message
 ```
 
