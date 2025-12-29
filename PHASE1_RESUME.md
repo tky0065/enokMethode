@@ -9,67 +9,67 @@
 
 ### 1.1 Tests Unitaires & Intégration ✅
 
--   ✅ Ajout de **Vitest** comme framework de test
--   ✅ Tests complets pour `detector.js` (15 tests)
-    -   Détection JS/TS (Next.js, React, Vue, etc.)
-    -   Détection Python (Django, FastAPI, Flask)
-    -   Détection Go (Gin, Fiber, GORM)
-    -   Détection Java (Spring Boot, Hibernate)
-    -   Cas limites (répertoires vides, fichiers malformés)
--   ✅ Tests d'intégration pour toutes les commandes CLI (14 tests)
-    -   `init` avec différents adapters
-    -   `spec` avec création et validation
-    -   `done` avec archivage et mise à jour mémoire
-    -   Tests de version et help
--   ✅ Configuration Vitest avec couverture de code
--   ✅ **Résultat**: 29/29 tests passent ✅
--   ✅ **Couverture**: detector.js à 99.18%
+- ✅ Ajout de **Vitest** comme framework de test
+- ✅ Tests complets pour `detector.js` (15 tests)
+    - Détection JS/TS (Next.js, React, Vue, etc.)
+    - Détection Python (Django, FastAPI, Flask)
+    - Détection Go (Gin, Fiber, GORM)
+    - Détection Java (Spring Boot, Hibernate)
+    - Cas limites (répertoires vides, fichiers malformés)
+- ✅ Tests d'intégration pour toutes les commandes CLI (14 tests)
+    - `init` avec différents adapters
+    - `spec` avec création et validation
+    - `done` avec archivage et mise à jour mémoire
+    - Tests de version et help
+- ✅ Configuration Vitest avec couverture de code
+- ✅ **Résultat**: 29/29 tests passent ✅
+- ✅ **Couverture**: detector.js à 99.18%
 
 ### 1.2 Amélioration du `package.json` ✅
 
--   ✅ Description pertinente ajoutée
--   ✅ Keywords pour npm search (12 keywords)
--   ✅ Repository, bugs, homepage configurés
--   ✅ Engines (Node >= 18.0.0, npm >= 9.0.0)
--   ✅ Files pour limiter la publication npm
--   ✅ Scripts de test, lint, format ajoutés
--   ✅ DevDependencies ajoutées (vitest, eslint, prettier)
--   ✅ License changée en MIT
+- ✅ Description pertinente ajoutée
+- ✅ Keywords pour npm search (12 keywords)
+- ✅ Repository, bugs, homepage configurés
+- ✅ Engines (Node >= 18.0.0, npm >= 9.0.0)
+- ✅ Files pour limiter la publication npm
+- ✅ Scripts de test, lint, format ajoutés
+- ✅ DevDependencies ajoutées (vitest, eslint, prettier)
+- ✅ License changée en MIT
 
 ### 1.3 Linting & Formatting ✅
 
--   ✅ ESLint configuré avec règles recommandées
--   ✅ Prettier configuré pour formatage cohérent
--   ✅ `.prettierignore` créé
--   ✅ Scripts `npm run lint` et `npm run format` fonctionnels
--   ✅ Intégration ESLint + Prettier (eslint-config-prettier)
--   ✅ Code formaté automatiquement
+- ✅ ESLint configuré avec règles recommandées
+- ✅ Prettier configuré pour formatage cohérent
+- ✅ `.prettierignore` créé
+- ✅ Scripts `npm run lint` et `npm run format` fonctionnels
+- ✅ Intégration ESLint + Prettier (eslint-config-prettier)
+- ✅ Code formaté automatiquement
 
 ### Documentation ✅
 
--   ✅ **LICENSE** (MIT) créé
--   ✅ **CHANGELOG.md** créé avec version 1.0.0
--   ✅ **CONTRIBUTING.md** créé avec guide complet
--   ✅ **README.md** amélioré avec:
-    -   Badges (npm, license, tests, node version)
-    -   Section "Key Features"
-    -   Section Contributing enrichie
-    -   Liens vers documentation
--   ✅ **.gitignore** amélioré (coverage, tests, tmp)
+- ✅ **LICENSE** (MIT) créé
+- ✅ **CHANGELOG.md** créé avec version 1.0.0
+- ✅ **CONTRIBUTING.md** créé avec guide complet
+- ✅ **README.md** amélioré avec:
+    - Badges (npm, license, tests, node version)
+    - Section "Key Features"
+    - Section Contributing enrichie
+    - Liens vers documentation
+- ✅ **.gitignore** amélioré (coverage, tests, tmp)
 
 ---
 
 ## 📊 Statistiques
 
-| Métrique                  | Valeur      |
-| ------------------------- | ----------- |
-| **Tests**                 | 29/29 ✅    |
-| **Couverture detector.js** | 99.18%      |
-| **Fichiers créés**        | 9           |
-| **Fichiers modifiés**     | 3           |
-| **Lignes de code tests**  | ~400        |
-| **Dépendances ajoutées**  | 4 (dev)     |
-| **Scripts npm**           | 6           |
+| Métrique                   | Valeur   |
+| -------------------------- | -------- |
+| **Tests**                  | 29/29 ✅ |
+| **Couverture detector.js** | 99.18%   |
+| **Fichiers créés**         | 9        |
+| **Fichiers modifiés**      | 3        |
+| **Lignes de code tests**   | ~400     |
+| **Dépendances ajoutées**   | 4 (dev)  |
+| **Scripts npm**            | 6        |
 
 ---
 
@@ -117,23 +117,23 @@ Selon le plan d'amélioration, les prochaines étapes sont:
 
 ### Phase 2.1 - Commandes Utilitaires (Priorité HAUTE 🔴)
 
--   [ ] `enokmethod status` - Affiche l'état actuel
--   [ ] `enokmethod list` - Liste les specs archivées
--   [ ] `enokmethod context` - Affiche CONTEXT.md
--   [ ] `enokmethod memory` - Affiche MEMORY.md
--   [ ] `enokmethod validate` - Valide la structure
+- [ ] `enokmethod status` - Affiche l'état actuel
+- [ ] `enokmethod list` - Liste les specs archivées
+- [ ] `enokmethod context` - Affiche CONTEXT.md
+- [ ] `enokmethod memory` - Affiche MEMORY.md
+- [ ] `enokmethod validate` - Valide la structure
 
 ### Phase 2.2 - Mode Interactif (Priorité MOYENNE 🟡)
 
--   [ ] Ajouter `inquirer` pour mode interactif
--   [ ] `enokmethod init --interactive`
--   [ ] `enokmethod wizard`
+- [ ] Ajouter `inquirer` pour mode interactif
+- [ ] `enokmethod init --interactive`
+- [ ] `enokmethod wizard`
 
 ### Phase 5.2 - CI/CD (Priorité MOYENNE 🟡)
 
--   [ ] GitHub Actions pour tests automatiques
--   [ ] Publication automatique sur npm
--   [ ] CodeQL et Dependabot
+- [ ] GitHub Actions pour tests automatiques
+- [ ] Publication automatique sur npm
+- [ ] CodeQL et Dependabot
 
 ---
 
@@ -150,10 +150,10 @@ Selon le plan d'amélioration, les prochaines étapes sont:
 
 ## 🎓 Leçons Apprises
 
--   Les tests CLI nécessitent `execSync` pour tester le binaire complet
--   La couverture de code pour un CLI est différente (focus sur la logique métier)
--   Prettier + ESLint ensemble nécessitent `eslint-config-prettier`
--   Les fixtures de test doivent être nettoyées avec `beforeEach`/`afterEach`
+- Les tests CLI nécessitent `execSync` pour tester le binaire complet
+- La couverture de code pour un CLI est différente (focus sur la logique métier)
+- Prettier + ESLint ensemble nécessitent `eslint-config-prettier`
+- Les fixtures de test doivent être nettoyées avec `beforeEach`/`afterEach`
 
 ---
 
@@ -161,11 +161,11 @@ Selon le plan d'amélioration, les prochaines étapes sont:
 
 Cette phase pose des **fondations solides** pour EnokMethod:
 
--   ✅ **Confiance**: Tests automatisés garantissent la stabilité
--   ✅ **Maintenabilité**: Code formaté et linté automatiquement
--   ✅ **Collaboration**: Documentation claire pour les contributeurs
--   ✅ **Distribution**: Prêt pour publication sur npm
--   ✅ **Professionnalisme**: Standards de l'industrie respectés
+- ✅ **Confiance**: Tests automatisés garantissent la stabilité
+- ✅ **Maintenabilité**: Code formaté et linté automatiquement
+- ✅ **Collaboration**: Documentation claire pour les contributeurs
+- ✅ **Distribution**: Prêt pour publication sur npm
+- ✅ **Professionnalisme**: Standards de l'industrie respectés
 
 ---
 

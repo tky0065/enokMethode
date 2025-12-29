@@ -35,14 +35,14 @@
 
 ## Phase 1 : Fondations Solides (Qualité & Tests)
 
-### 1.1 Tests Unitaires & Intégration
+### 1.1 Tests Unitaires & Intégration ✅ TERMINÉ
 
-- [ ] Ajouter **Vitest** comme framework de test
-- [ ] Tester `detector.js` (détection de stack)
-- [ ] Tester toutes les commandes CLI (`init`, `spec`, `done`)
-- [ ] Ajouter couverture de code (coverage)
-- [ ] Créer des fixtures de test (projets exemples)
-- [ ] Tests d'intégration end-to-end
+- [x] Ajouter **Vitest** comme framework de test
+- [x] Tester `detector.js` (détection de stack)
+- [x] Tester toutes les commandes CLI (`init`, `spec`, `done`)
+- [x] Ajouter couverture de code (coverage)
+- [x] Créer des fixtures de test (projets exemples)
+- [x] Tests d'intégration end-to-end
 
 **Fichiers à créer**:
 
@@ -62,14 +62,14 @@
 }
 ```
 
-### 1.2 Amélioration du `package.json`
+### 1.2 Amélioration du `package.json` ✅ TERMINÉ
 
-- [ ] Ajouter une description pertinente
-- [ ] Ajouter des keywords pour npm search
-- [ ] Ajouter `repository`, `bugs`, `homepage`
-- [ ] Ajouter `engines` (version Node minimale)
-- [ ] Ajouter `files` pour limiter ce qui est publié
-- [ ] Ajouter scripts de test et lint
+- [x] Ajouter une description pertinente
+- [x] Ajouter des keywords pour npm search
+- [x] Ajouter `repository`, `bugs`, `homepage`
+- [x] Ajouter `engines` (version Node minimale)
+- [x] Ajouter `files` pour limiter ce qui est publié
+- [x] Ajouter scripts de test et lint
 
 **Exemple de métadonnées**:
 
@@ -91,14 +91,14 @@
 }
 ```
 
-### 1.3 Linting & Formatting
+### 1.3 Linting & Formatting ✅ TERMINÉ
 
-- [ ] Ajouter **ESLint** avec config recommandée
-- [ ] Ajouter **Prettier** pour le formatting
-- [ ] Script `npm run lint` et `npm run format`
-- [ ] Fichier `.eslintrc.json` avec règles
-- [ ] Fichier `.prettierrc` avec config
-- [ ] Fichier `.prettierignore`
+- [x] Ajouter **ESLint** avec config recommandée
+- [x] Ajouter **Prettier** pour le formatting
+- [x] Script `npm run lint` et `npm run format`
+- [x] Fichier `.eslintrc.json` avec règles
+- [x] Fichier `.prettierrc` avec config
+- [x] Fichier `.prettierignore`
 
 **Dépendances**:
 
@@ -114,13 +114,13 @@
 
 ## Phase 2 : Nouvelles Fonctionnalités CLI
 
-### 2.1 Commandes Utilitaires
+### 2.1 Commandes Utilitaires ✅ TERMINÉ
 
-- [ ] `enokmethod status` : Affiche l'état actuel (spec active, mémoire récente)
-- [ ] `enokmethod list` : Liste les specs archivées
-- [ ] `enokmethod context` : Affiche le CONTEXT.md formaté
-- [ ] `enokmethod memory` : Affiche la MEMORY.md formatée
-- [ ] `enokmethod validate` : Valide la structure `.enokMethod/`
+- [x] `enokmethod status` : Affiche l'état actuel (spec active, mémoire récente)
+- [x] `enokmethod list` : Liste les specs archivées
+- [x] `enokmethod context` : Affiche le CONTEXT.md formaté
+- [x] `enokmethod memory` : Affiche la MEMORY.md formatée
+- [x] `enokmethod validate` : Valide la structure `.enokMethod/`
 
 **Détails des commandes**:
 
@@ -155,7 +155,6 @@ Vérifie:
 - [ ] Ajouter **inquirer** pour un mode interactif
 - [ ] `enokmethod init --interactive` : Guide l'utilisateur pas à pas
 - [ ] `enokmethod spec` (sans titre) : Demande le titre interactivement
-- [ ] `enokmethod wizard` : Assistant complet de création de projet
 
 **Dépendances**:
 
@@ -539,15 +538,15 @@ jobs:
 
 ## ✅ Critères de Succès
 
-### Phase 1
+### Phase 1 ✅ TERMINÉ
 
-- [ ] Couverture de tests > 80%
-- [ ] Zéro erreur ESLint
-- [ ] Package.json complet et valide
+- [x] Couverture de tests > 80%
+- [x] Zéro erreur ESLint
+- [x] Package.json complet et valide
 
-### Phase 2
+### Phase 2 (Partiel) ⏳ EN COURS
 
-- [ ] Toutes les commandes utilitaires fonctionnelles
+- [x] Toutes les commandes utilitaires fonctionnelles
 - [ ] Mode interactif testé et documenté
 
 ### Phase 3
