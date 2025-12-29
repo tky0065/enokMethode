@@ -5,7 +5,7 @@ set -e
 # Configuration
 INSTALL_DIR="$HOME/.enokmethod-src"
 # CHANGE THIS URL TO YOUR GITHUB REPO URL
-REPO_URL="https://github.com/yacoubakone/enokMethode.git"
+REPO_URL="https://github.com/tky0065/enokMethode.git"
 
 echo "🚀 Installing EnokMethod..."
 

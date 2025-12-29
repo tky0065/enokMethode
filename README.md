@@ -18,7 +18,7 @@ EnokMethod is a minimalist, high-efficiency software development methodology des
 You don't need to publish to npm. Install directly from source using this one-liner:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/yacoubakone/enokMethode/main/scripts/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/tky0065/enokMethode/main/scripts/install.sh | bash
 ```
 
 *Prerequisites: Node.js (v18+) and Git must be installed.*
