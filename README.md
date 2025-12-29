@@ -1,6 +1,6 @@
 # EnokMethod
 
-> **Context-First Spec-Driven Development for the AI Era.**
+> **Context-First Spec-Driven Development for the AI Era.** `CFSDD`
 
 EnokMethod is a minimalist, high-efficiency software development methodology designed for the age of LLMs. It optimizes "Context Energy"—ensuring AI agents (and humans) have exactly the right information at the right time, preventing hallucinations and reducing token costs.
 
