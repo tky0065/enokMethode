@@ -1,0 +1,47 @@
+name: PR Checks
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened]
+
+jobs:
+    pr-checks:
+        name: PR Quality Checks
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Check formatting
+              run: npm run format:check
+
+            - name: Run linter
+              run: npm run lint
+
+            - name: Run tests
+              run: npm test
+
+            - name: Check for uncommitted changes
+              run: |
+                  git diff --exit-code || (echo "Error: Uncommitted changes detected" && exit 1)
+
+            - name: Validate package.json
+              run: |
+                  node -e "const pkg = require('./package.json'); if (!pkg.version || !pkg.description) process.exit(1)"
+
+            - name: Check CHANGELOG updated
+              if: github.event.pull_request.base.ref == 'main'
+              run: |
+                  git diff origin/main...HEAD --name-only | grep -q CHANGELOG.md || echo "::warning::CHANGELOG.md not updated"

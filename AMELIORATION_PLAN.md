@@ -150,13 +150,9 @@ Vérifie:
 - Validité du format des fichiers
 - Cohérence des références
 
-
-
 - [ ] Ajouter **inquirer** pour un mode interactif
 - [ ] `enokmethod init --interactive` : Guide l'utilisateur pas à pas
 - [ ] `enokmethod spec` (sans titre) : Demande le titre interactivement
-
-
 
 ### 2.2 Amélioration de `init`
 
@@ -175,22 +171,13 @@ Vérifie:
 
 ---
 
-## Phase 3 : Enrichissement des Templates ## PAS DE ADR OU terme de metier ca vas complexier la methode pour rien
+## Phase 3 : Enrichissement des Templates
 
 ### 3.1 Nouveaux Templates
 
 - [ ] **PROMPTS_CUSTOM.md** : Prompts personnalisés par projet
 
-
-**Chaque preset inclut**:
-
-- CONTEXT.md pré-rempli avec la stack
-- Structure de dossiers recommandée
-- Conventions de nommage spécifiques
-- Exemples de SPEC.md adaptés
-
-
-### 3.3 Amélioration des Prompts Agents
+### 3.2 Amélioration des Prompts Agents
 
 - [ ] Prompt **QA/Reviewer** : Pour la review de code
 - [ ] Prompt **Documenter** : Pour générer la documentation
@@ -287,13 +274,13 @@ Closes: CURRENT_SPEC.md
 [![Coverage](https://codecov.io/gh/tky0065/enokMethode/branch/main/graph/badge.svg)](https://codecov.io/gh/tky0065/enokMethode)
 ```
 
-### 5.2 GitHub Actions CI/CD
+### 5.2 GitHub Actions CI/CD ✅ TERMINÉ
 
-- [ ] Workflow de tests automatiques
-- [ ] Publication automatique sur tag
-- [ ] Vérification des PR
-- [ ] Analyse de code (CodeQL)
-- [ ] Vérification des dépendances (Dependabot)
+- [x] Workflow de tests automatiques
+- [x] Publication automatique sur tag
+- [x] Vérification des PR
+- [x] Analyse de code (CodeQL)
+- [x] Vérification des dépendances (Dependabot)
 
 **Fichiers à créer**:
 

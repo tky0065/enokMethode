@@ -1,6 +1,6 @@
 {
     "name": "enokmethod",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Context-First Spec-Driven Development for the AI Era - A minimalist methodology optimizing AI-human collaboration",
     "main": "bin/enok.js",
     "bin": {
