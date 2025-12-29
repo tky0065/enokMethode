@@ -1,4 +1,4 @@
-# EnokMethod
+# EnokMethod - Context-First Spec-Driven Development -
 
 [![npm version](https://img.shields.io/npm/v/enokmethod.svg)](https://www.npmjs.com/package/enokmethod)
 [![Tests](https://github.com/tky0065/enokMethode/workflows/Tests/badge.svg)](https://github.com/tky0065/enokMethode/actions/workflows/test.yml)
@@ -15,11 +15,13 @@ EnokMethod is a minimalist, high-efficiency software development methodology des
 ## ✨ Key Features
 
 - 🎯 **Simple & Powerful**: 3 core files (CONTEXT, MEMORY, SPEC) vs 21+ agents
-- 🤖 **AI-Native**: Optimized for Cursor, Claude, Gemini, and more
-- 🔍 **Auto-Detection**: Automatically detects your tech stack
-- 📦 **Multi-Adapter**: Works with your favorite AI tool
-- ✅ **Tested**: 29 tests, >80% coverage
+- 🤖 **AI-Native**: 7 adapters (Cursor, Claude, Gemini, Copilot, Windsurf, Aider, General)
+- 🔍 **Auto-Detection**: Automatically detects your tech stack (JS/TS, Python, Go, Java)
+- 📦 **9 CLI Commands**: From `init` to `commit`, everything you need
+- 🧠 **6 Agent Prompts**: Architect, Tech-Lead, Developer, Reviewer, Documenter, Debugger
+- ✅ **Fully Tested**: 49 tests, 99% coverage, CI/CD with GitHub Actions
 - 🚀 **Fast**: Minimal overhead, maximum efficiency
+- 🌍 **Language-Agnostic**: Works with any programming language
 
 ---
 
@@ -103,7 +105,39 @@ Upload `GEMINI.md` (or `AGENT.md`) + `CONTEXT.md` + `MEMORY.md` to your LLM sess
 
 ---
 
-## 📂 Structure
+## � CLI Commands
+
+EnokMethod provides 9 powerful commands:
+
+### Core Commands
+
+```bash
+enokmethod init [--adapter <type>]  # Initialize project (7 adapters available)
+enokmethod spec <title>             # Create a new specification
+enokmethod done <name>              # Archive completed spec
+```
+
+### Utility Commands
+
+```bash
+enokmethod status                   # Show project status and active spec
+enokmethod list [--limit <n>]       # List archived specs (with search)
+enokmethod context                  # Display CONTEXT.md
+enokmethod memory                   # Display MEMORY.md
+enokmethod validate                 # Validate project structure
+```
+
+### Git Integration
+
+```bash
+enokmethod commit [-m <msg>]        # Generate conventional commit message
+```
+
+**Adapters**: `cursor`, `claude`, `gemini`, `copilot`, `general`, `windsurf`, `aider`
+
+---
+
+## �📂 Structure
 
 ```text
 .
