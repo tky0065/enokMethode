@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-12-29
+
+### Added
+
+- **3 New Agent Prompts** (Phase 3.3):
+    - Reviewer: Code review with comprehensive checklist
+    - Documenter: Technical documentation specialist
+    - Debugger: Systematic debugging with common patterns
+- **2 New IDE Adapters** (Phase 4.1, 4.2):
+    - Windsurf support (`.windsurfrules`)
+    - Aider support (`.aider.conf.yml`)
+- **Git Integration** (Phase 4.3):
+    - `enokmethod commit` command for conventional commit messages
+    - Auto-generate commit messages from CURRENT_SPEC.md
+
+### Changed
+
+- Updated `init` command to support `--adapter windsurf` and `--adapter aider`
+- Updated improvement plan with completed tasks
+
+### Documentation
+
+- 3 new agent prompt files with detailed workflows
+
 ## [1.2.0] - 2025-12-29
 
 ### Added

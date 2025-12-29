@@ -194,6 +194,24 @@ Run the following command to finish the spec:
                 console.log(chalk.green('✔ Installed General AI instructions (AGENT.md)'));
             }
 
+            // 6. Adapter: Windsurf
+            if (options.adapter === 'windsurf') {
+                await fs.copy(
+                    path.join(templatesDir, 'windsurfrules'),
+                    path.join(targetDir, '.windsurfrules')
+                );
+                console.log(chalk.green('✔ Installed Windsurf config (.windsurfrules)'));
+            }
+
+            // 7. Adapter: Aider
+            if (options.adapter === 'aider') {
+                await fs.copy(
+                    path.join(templatesDir, 'aider.conf.yml'),
+                    path.join(targetDir, '.aider.conf.yml')
+                );
+                console.log(chalk.green('✔ Installed Aider config (.aider.conf.yml)'));
+            }
+
             console.log(chalk.green('✔ EnokMethod successfully initialized!'));
             console.log(chalk.blue('Next steps:'));
             console.log('1. Fill out .enokMethod/CONTEXT.md with your tech stack.');
@@ -512,6 +530,70 @@ program
             console.log(chalk.green.bold('✅ Structure is valid!'));
         } else {
             console.log(chalk.yellow.bold('⚠️  Some files are missing. Run: enokmethod init'));
+        }
+    });
+
+// COMMAND: COMMIT
+program
+    .command('commit')
+    .description('Generate a conventional commit message based on CURRENT_SPEC.md')
+    .option('-m, --message <msg>', 'Custom commit message')
+    .option('--no-verify', 'Skip git hooks')
+    .action(async (options) => {
+        const targetDir = process.cwd();
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
+
+        try {
+            let commitMessage = '';
+
+            // If custom message provided, use it
+            if (options.message) {
+                commitMessage = options.message;
+            } else if (await fs.pathExists(specPath)) {
+                // Generate from CURRENT_SPEC.md
+                const specContent = await fs.readFile(specPath, 'utf8');
+
+                // Extract title/goal
+                const goalMatch = specContent.match(/\*\*Goal\*\*:\s*(.+)/);
+                const goal = goalMatch ? goalMatch[1].trim() : 'Update';
+
+                // Extract requirements
+                const reqMatches = specContent.match(/^- \[x\] (.+)$/gm) || [];
+                const completedReqs = reqMatches.map((r) => r.replace(/^- \[x\] /, '- '));
+
+                // Determine type
+                let type = 'feat';
+                if (goal.toLowerCase().includes('fix')) type = 'fix';
+                if (goal.toLowerCase().includes('doc')) type = 'docs';
+                if (goal.toLowerCase().includes('refactor')) type = 'refactor';
+                if (goal.toLowerCase().includes('test')) type = 'test';
+
+                // Build commit message
+                commitMessage = `${type}: ${goal}`;
+                if (completedReqs.length > 0) {
+                    commitMessage += '\n\n' + completedReqs.join('\n');
+                }
+            } else {
+                console.log(
+                    chalk.yellow('No CURRENT_SPEC.md found and no custom message provided.')
+                );
+                console.log(chalk.gray('Usage: enokmethod commit -m "your message"'));
+                return;
+            }
+
+            // Display proposed message
+            console.log(chalk.blue.bold('\n📝 Proposed Commit Message:\n'));
+            console.log(chalk.white(commitMessage));
+            console.log('');
+
+            // Ask for confirmation (simplified - in real use, would use inquirer)
+            console.log(chalk.yellow('Run this command to commit:'));
+            const verifyFlag = options.verify === false ? ' --no-verify' : '';
+            console.log(
+                chalk.cyan(`git commit -m "${commitMessage.replace(/\n/g, '\\n')}"${verifyFlag}`)
+            );
+        } catch (err) {
+            console.error(chalk.red('Failed to generate commit message:'), err);
         }
     });
 

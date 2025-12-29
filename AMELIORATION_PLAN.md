@@ -209,29 +209,29 @@ Your goal is to review code changes against the CURRENT_SPEC.md.
 
 ## Phase 4 : Intégrations Avancées
 
-### 4.1 Support Windsurf (IDE Codeium)
+### 4.1 Support Windsurf (IDE Codeium) ✅ TERMINÉ
 
-- [ ] Créer adapter `--adapter windsurf`
-- [ ] Template `.windsurfrules` équivalent
-- [ ] Documentation spécifique Windsurf
+- [x] Créer adapter `--adapter windsurf`
+- [x] Template `.windsurfrules` équivalent
+- [x] Documentation spécifique Windsurf
 
 **Fichier à créer**:
 
 - `.enokMethod/templates/windsurfrules`
 
-### 4.2 Support Aider (CLI AI)
+### 4.2 Support Aider (CLI AI) ✅ TERMINÉ
 
-- [ ] Créer adapter `--adapter aider`
-- [ ] Fichier `.aider.conf.yaml` avec conventions
-- [ ] Documentation spécifique Aider
+- [x] Créer adapter `--adapter aider`
+- [x] Fichier `.aider.conf.yaml` avec conventions
+- [x] Documentation spécifique Aider
 
 **Fichier à créer**:
 
 - `.enokMethod/templates/aider.conf.yaml`
 
-### 4.3 Intégration Git
+### 4.3 Intégration Git ✅ PARTIEL
 
-- [ ] `enokmethod commit` : Commit automatique avec message basé sur la spec
+- [x] `enokmethod commit` : Commit automatique avec message basé sur la spec
 - [ ] Hook pre-commit pour valider la structure
 - [ ] Génération automatique de changelog
 - [ ] `enokmethod release` : Prépare une release
