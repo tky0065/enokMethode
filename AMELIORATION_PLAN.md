@@ -150,7 +150,7 @@ Vérifie:
 - Validité du format des fichiers
 - Cohérence des références
 
-### 2.2 Mode Interactif
+
 
 - [ ] Ajouter **inquirer** pour un mode interactif
 - [ ] `enokmethod init --interactive` : Guide l'utilisateur pas à pas
@@ -173,7 +173,7 @@ Vérifie:
 ? Voulez-vous activer les tests? › Oui / Non
 ```
 
-### 2.3 Amélioration de `init`
+### 2.2 Amélioration de `init`
 
 - [ ] Option `--force` pour réinitialiser
 - [ ] Option `--template <preset>` (nextjs, fastapi, etc.)
