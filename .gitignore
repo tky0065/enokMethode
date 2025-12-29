@@ -1,9 +1,35 @@
+# Dependencies
 node_modules/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Environment
 .env
-npm-debug.log
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Testing
+coverage/
+tests/fixtures/
+tests/test-project/
+
+# Build
+dist/
+
+# EnokMethod (keep templates and prompts)
 .enokMethod/
 !/.enokMethod/templates/
 !/.enokMethod/prompts/
+
+# Temporary
 demo_test/
 test_detect/
+tmp/
+*.tmp

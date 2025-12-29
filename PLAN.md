@@ -3,6 +3,7 @@
 Ce plan décrit les étapes pour construire les actifs, templates et outils nécessaires à la distribution et à l'utilisation de la méthode EnokMethod.
 
 ## Phase 1 : Fondation (Core Structure)
+
 L'objectif est de créer les templates standards qui seront copiés dans chaque nouveau projet utilisant la méthode.
 
 - [ ] **Créer la structure de répertoires**
@@ -16,6 +17,7 @@ L'objectif est de créer les templates standards qui seront copiés dans chaque 
     - [ ] `templates/SPEC.md` : Le modèle pour `CURRENT_SPEC.md` (Objective, User Stories, Tech Impact, Acceptance Criteria).
 
 ## Phase 2 : Intégration des Outils (Tooling)
+
 Rendre la méthode utilisable "out-of-the-box" pour les utilisateurs de Cursor et CLI.
 
 - [ ] **Intégration Cursor**
@@ -29,6 +31,7 @@ Rendre la méthode utilisable "out-of-the-box" pour les utilisateurs de Cursor e
     - [ ] `scripts/archive-spec.sh` : Script pour déplacer `CURRENT_SPEC.md` vers `archive/` (Format: `YYYY-MM-DD_HH-mm-Name.md`) et mettre à jour `MEMORY.md`.
 
 ## Phase 3 : Intelligence (Prompts "Agents")
+
 Définir les prompts systèmes pour les différents rôles, stockés dans `.enokMethod/prompts/` pour référence.
 
 - [ ] **Prompt "Architecte"** : Pour transformer une idée brute en `CURRENT_SPEC.md`.
@@ -36,5 +39,6 @@ Définir les prompts systèmes pour les différents rôles, stockés dans `.enok
 - [ ] **Prompt "Developer"** : Pour l'exécution du code en respectant le contexte.
 
 ## Phase 4 : Documentation & Distribution
+
 - [ ] **README.md** : Guide d'installation et d'utilisation ("Getting Started").
 - [ ] **Exemple de Démonstration** : Appliquer la méthode à ce projet lui-même (Dogfooding).

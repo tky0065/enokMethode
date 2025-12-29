@@ -8,7 +8,7 @@ async function detectTechStack(targetDir) {
         styling: null,
         database: null,
         state: null,
-        testing: null
+        testing: null,
     };
 
     try {
@@ -59,14 +59,21 @@ async function detectTechStack(targetDir) {
         }
 
         // 2. PYTHON
-        else if (await fs.pathExists(path.join(targetDir, 'requirements.txt')) || await fs.pathExists(path.join(targetDir, 'pyproject.toml'))) {
+        else if (
+            (await fs.pathExists(path.join(targetDir, 'requirements.txt'))) ||
+            (await fs.pathExists(path.join(targetDir, 'pyproject.toml')))
+        ) {
             stack.language = 'Python';
-            
+
             let content = '';
             if (await fs.pathExists(path.join(targetDir, 'requirements.txt'))) {
-                content = await fs.readFile(path.join(targetDir, 'requirements.txt'), 'utf8').then(c => c.toLowerCase());
+                content = await fs
+                    .readFile(path.join(targetDir, 'requirements.txt'), 'utf8')
+                    .then((c) => c.toLowerCase());
             } else {
-                content = await fs.readFile(path.join(targetDir, 'pyproject.toml'), 'utf8').then(c => c.toLowerCase());
+                content = await fs
+                    .readFile(path.join(targetDir, 'pyproject.toml'), 'utf8')
+                    .then((c) => c.toLowerCase());
             }
 
             if (content.includes('django')) stack.framework = 'Django';
@@ -81,7 +88,7 @@ async function detectTechStack(targetDir) {
         else if (await fs.pathExists(path.join(targetDir, 'go.mod'))) {
             stack.language = 'Go';
             const content = await fs.readFile(path.join(targetDir, 'go.mod'), 'utf8');
-            
+
             if (content.includes('gin-gonic')) stack.framework = 'Gin';
             else if (content.includes('gofiber')) stack.framework = 'Fiber';
             else if (content.includes('echo')) stack.framework = 'Echo';
@@ -91,21 +98,23 @@ async function detectTechStack(targetDir) {
         }
 
         // 4. JAVA / SPRING
-        else if (await fs.pathExists(path.join(targetDir, 'pom.xml')) || await fs.pathExists(path.join(targetDir, 'build.gradle'))) {
+        else if (
+            (await fs.pathExists(path.join(targetDir, 'pom.xml'))) ||
+            (await fs.pathExists(path.join(targetDir, 'build.gradle')))
+        ) {
             stack.language = 'Java';
             // Simple check, reading XML/Gradle is complex, assuming Spring if common files exist
-            const content = (await fs.pathExists(path.join(targetDir, 'pom.xml'))) 
-                ? await fs.readFile(path.join(targetDir, 'pom.xml'), 'utf8') 
+            const content = (await fs.pathExists(path.join(targetDir, 'pom.xml')))
+                ? await fs.readFile(path.join(targetDir, 'pom.xml'), 'utf8')
                 : await fs.readFile(path.join(targetDir, 'build.gradle'), 'utf8');
-            
+
             if (content.includes('spring-boot')) stack.framework = 'Spring Boot';
             if (content.includes('hibernate')) stack.database = 'Hibernate';
             if (content.includes('junit')) stack.testing = 'JUnit';
         }
-
     } catch (error) {
         // Silently fail on detection errors, return what we found so far
-        console.error("Detection warning:", error.message);
+        console.error('Detection warning:', error.message);
     }
 
     return stack;

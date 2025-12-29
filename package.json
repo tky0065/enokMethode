@@ -1,21 +1,65 @@
 {
-  "name": "enokmethode",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "bin": {
-    "enokmethod": "./bin/enok.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^14.0.2",
-    "fs-extra": "^11.3.3"
-  }
+    "name": "enokmethod",
+    "version": "1.0.0",
+    "description": "Context-First Spec-Driven Development for the AI Era - A minimalist methodology optimizing AI-human collaboration",
+    "main": "bin/enok.js",
+    "bin": {
+        "enokmethod": "./bin/enok.js"
+    },
+    "scripts": {
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "lint": "eslint bin/ --fix",
+        "format": "prettier --write \"**/*.{js,json,md}\"",
+        "format:check": "prettier --check \"**/*.{js,json,md}\""
+    },
+    "keywords": [
+        "ai",
+        "development",
+        "methodology",
+        "spec-driven",
+        "cursor",
+        "claude",
+        "gemini",
+        "context-management",
+        "llm",
+        "ai-native",
+        "developer-tools",
+        "cli"
+    ],
+    "author": "EnokMethod Contributors",
+    "license": "MIT",
+    "type": "commonjs",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=9.0.0"
+    },
+    "files": [
+        "bin/",
+        ".enokMethod/",
+        "scripts/",
+        "README.md",
+        "LICENSE"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tky0065/enokMethode.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tky0065/enokMethode/issues"
+    },
+    "homepage": "https://github.com/tky0065/enokMethode#readme",
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "commander": "^14.0.2",
+        "fs-extra": "^11.3.3"
+    },
+    "devDependencies": {
+        "@vitest/coverage-v8": "^1.0.0",
+        "eslint": "^8.56.0",
+        "eslint-config-prettier": "^9.1.0",
+        "prettier": "^3.1.1",
+        "vitest": "^1.0.0"
+    }
 }

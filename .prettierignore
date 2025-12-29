@@ -1,0 +1,5 @@
+node_modules
+.enokMethod/archive
+coverage
+dist
+*.log
