@@ -285,6 +285,14 @@ This generates a conventional commit message based on CURRENT_SPEC.md.
 Options:
 - \`-m <msg>\`: Use custom commit message
 - \`--no-verify\`: Skip git hooks`
+                    },
+                    dev: {
+                        description: 'Show development dashboard and active task',
+                        content: `# Enok Dev Dashboard
+Run the following command to see progress:
+\`enokmethod dev\`
+
+This shows the progress bar and the next task to implement based on CURRENT_SPEC.md.`
                     }
                 };
 
@@ -977,6 +985,88 @@ program
             );
         } catch (err) {
             console.error(chalk.red('Failed to generate commit message:'), err);
+        }
+    });
+
+// COMMAND: DEV (DASHBOARD)
+program
+    .command('dev')
+    .description('Show development dashboard, progress, and current proactive task')
+    .action(async () => {
+        const targetDir = process.cwd();
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
+
+        try {
+            console.log(chalk.blue.bold('\n🚀 EnokMethod Dev Dashboard\n'));
+
+            if (!(await fs.pathExists(specPath))) {
+                console.log(chalk.yellow('⚠️  No active specification found.'));
+                console.log(chalk.gray('   To start, run: enokmethod spec "Your Goal"'));
+                return;
+            }
+
+            const specContent = await fs.readFile(specPath, 'utf8');
+            
+            // Extract Title
+            const titleMatch = specContent.match(/\*\*Goal\*\*:\s*(.+)/);
+            const title = titleMatch ? titleMatch[1].trim() : 'Untitled Spec';
+
+            // Extract Tasks (- [ ] or - [x])
+            const taskRegex = /^\s*-\s*\[([ xX])\]\s*(.+)$/gm;
+            let match;
+            let total = 0;
+            let completed = 0;
+            let nextTask = null;
+
+            while ((match = taskRegex.exec(specContent)) !== null) {
+                total++;
+                const isDone = match[1].toLowerCase() === 'x';
+                const taskText = match[2].trim();
+
+                if (isDone) {
+                    completed++;
+                } else if (!nextTask) {
+                    // First unchecked task is the active focus
+                    nextTask = taskText;
+                }
+            }
+
+            // Calculate Progress
+            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+            const barLength = 20;
+            const filledLength = Math.round((barLength * percentage) / 100);
+            const bar = '█'.repeat(filledLength) + '░'.repeat(barLength - filledLength);
+
+            // Display
+            console.log(chalk.white(`📝 Spec: ${chalk.bold(title)}`));
+            
+            // Progress Bar
+            let colorFn = chalk.red;
+            if (percentage > 30) colorFn = chalk.yellow;
+            if (percentage > 70) colorFn = chalk.green;
+            
+            console.log(chalk.gray(`   Progress: `) + colorFn(`[${bar}] ${percentage}%`) + chalk.gray(` (${completed}/${total})`));
+
+            console.log(''); // Spacer
+
+            // Current Focus
+            if (nextTask) {
+                console.log(chalk.green.bold('👉 CURRENT FOCUS:'));
+                console.log(chalk.white(`   [ ] ${nextTask}`));
+                console.log('');
+                console.log(chalk.gray('   (Implement this task, then mark it [x] in CURRENT_SPEC.md)'));
+            } else if (total > 0 && percentage === 100) {
+                console.log(chalk.green.bold('🎉 ALL TASKS COMPLETED!'));
+                console.log(chalk.cyan('   Run: enokmethod done "' + title + '"'));
+                console.log(chalk.cyan('   Run: enokmethod commit'));
+            } else {
+                console.log(chalk.yellow('   No checklist found in CURRENT_SPEC.md'));
+                console.log(chalk.gray('   Add tasks like: - [ ] Task description'));
+            }
+            console.log('');
+
+        } catch (err) {
+            console.error(chalk.red('Failed to load dashboard:'), err);
         }
     });
 

@@ -295,4 +295,42 @@ describe('New CLI Commands', () => {
             expect(output).toContain('--no-verify');
         });
     });
+
+    describe('dev command', () => {
+        it('should show dashboard with active task', async () => {
+            const specPath = path.join(TEST_DIR, 'CURRENT_SPEC.md');
+            await fs.writeFile(specPath, `---
+title: Active Spec
+---
+**Goal**: Implement Dashboard
+
+## Plan
+- [x] Task 1
+- [ ] Task 2
+- [ ] Task 3
+`);
+            const output = runCLI('dev');
+            expect(output).toContain('EnokMethod Dev Dashboard');
+            expect(output).toContain('33%');
+            expect(output).toContain('CURRENT FOCUS');
+            expect(output).toContain('Task 2');
+        });
+
+        it('should show all completed message', async () => {
+            const specPath = path.join(TEST_DIR, 'CURRENT_SPEC.md');
+            await fs.writeFile(specPath, `**Goal**: DoneSpec\n- [x] Task 1`);
+            const output = runCLI('dev');
+            expect(output).toContain('ALL TASKS COMPLETED');
+        });
+
+        it('should warn when no spec exists', async () => {
+            // Delete spec if exists
+            const specPath = path.join(TEST_DIR, 'CURRENT_SPEC.md');
+            if (await fs.pathExists(specPath)) {
+                await fs.unlink(specPath);
+            }
+            const output = runCLI('dev');
+            expect(output).toContain('No active specification found');
+        });
+    });
 });

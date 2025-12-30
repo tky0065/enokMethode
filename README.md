@@ -102,7 +102,7 @@ stateDiagram-v2
   - **Cursor** & **Windsurf** (Best for IDE flow)
   - **GitHub Copilot**
   - **Aider**
-- **📦 9 CLI Commands**: `init`, `spec`, `done`, `status`, `list`, `context`, `memory`, `validate`, `commit`.
+- 📦 **10 CLI Commands**: `init`, `spec`, `done`, `status`, `list`, `context`, `memory`, `validate`, `commit`, `dev`.
 
 ---
 

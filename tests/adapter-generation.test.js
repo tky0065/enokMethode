@@ -45,7 +45,7 @@ describe('Adapter File Generation', () => {
             expect(await fs.pathExists(enokDir)).toBe(true);
             const commands = await fs.readdir(enokDir);
 
-            expect(commands).toHaveLength(8);
+            expect(commands).toHaveLength(9);
             expect(commands).toContain('spec.md');
             expect(commands).toContain('done.md');
             expect(commands).toContain('status.md');
@@ -54,6 +54,7 @@ describe('Adapter File Generation', () => {
             expect(commands).toContain('memory.md');
             expect(commands).toContain('list.md');
             expect(commands).toContain('commit.md');
+            expect(commands).toContain('dev.md');
         });
 
         it('should generate CLAUDE.md guide', async () => {

@@ -37,7 +37,8 @@ Ce document résume les structures spécifiques générées pour chaque outil AI
         ├── context.md
         ├── memory.md
         ├── list.md
-        └── commit.md
+        ├── commit.md
+        └── dev.md
 CLAUDE.md                 # Guide principal (Orchestrator based)
 ```
 
