@@ -97,13 +97,14 @@ stateDiagram-v2
   - **Reviewer**: Quality assurance.
   - **Documenter**: Maintains README/Docs.
   - **Debugger**: Systematic issue resolution.
+- 🤖 **Self-Healing State**: `context` and `memory` commands automatically rescan and sync project state.
 - **🔌 Multi-Adapter Support**: Native configuration generation for:
   - **Claude Code** (Best for CLI autonomy)
   - **Cursor** & **Windsurf** (Best for IDE flow)
   - **GitHub Copilot**
   - **Aider**
 - 📦 **10 CLI Commands**: Including the powerful `enokmethod dev` dashboard.
-- ✅ **Fully Tested**: 76 tests, 99% coverage.
+- ✅ **Fully Tested**: 78 tests, 99% coverage.
 
 ---
 
