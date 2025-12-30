@@ -23,27 +23,20 @@ read:
     - .enokMethod/CONTEXT.md
     - .enokMethod/MEMORY.md
     - CURRENT_SPEC.md
+    - CONVENTIONS.md
 
-# Conventions
-conventions: |
-    You are following the EnokMethod methodology.
-    
-    ALWAYS:
-    1. Read .enokMethod/CONTEXT.md before making changes
-    2. Check .enokMethod/MEMORY.md for recent activity
-    3. If CURRENT_SPEC.md exists, implement ONLY what's in the spec
-    4. Use the tech stack defined in CONTEXT.md
-    5. Follow the coding conventions in CONTEXT.md
-    
-    NEVER:
-    1. Install libraries not in the tech stack without asking
-    2. Refactor code unrelated to the current task
-    3. Skip tests if testing is enabled
-    4. Leave unused imports or dead code
-
-# Workflow commands
+# Workflow commands (EnokMethod Namespaced)
 aliases:
+    # Short aliases
     spec: enokmethod spec "$1"
     done: enokmethod done "$1"
     status: enokmethod status
     validate: enokmethod validate
+    commit: enokmethod commit
+    
+    # Namespaced aliases (Explicit)
+    "enok:spec": enokmethod spec "$1"
+    "enok:done": enokmethod done "$1"
+    "enok:status": enokmethod status
+    "enok:validate": enokmethod validate
+    "enok:commit": enokmethod commit

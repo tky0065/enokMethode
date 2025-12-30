@@ -40,7 +40,10 @@ describe('Adapter File Generation', () => {
             execSync(`node "${CLI_PATH}" init --adapter claude`, { cwd: testDir });
 
             const commandsDir = path.join(testDir, '.claude', 'commands');
-            const commands = await fs.readdir(commandsDir);
+            const enokDir = path.join(commandsDir, 'enok'); // New namespace dir
+            
+            expect(await fs.pathExists(enokDir)).toBe(true);
+            const commands = await fs.readdir(enokDir);
 
             expect(commands).toHaveLength(8);
             expect(commands).toContain('spec.md');
@@ -187,7 +190,7 @@ describe('Adapter File Generation', () => {
                 // Check prompts directory has 6 files
                 const promptsDir = path.join(testDir, '.enokMethod', 'prompts');
                 const prompts = await fs.readdir(promptsDir);
-                expect(prompts).toHaveLength(6);
+                expect(prompts).toHaveLength(7);
             }
         });
     });

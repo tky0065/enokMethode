@@ -288,13 +288,17 @@ Options:
                     }
                 };
 
+                // Ensure enok namespace directory exists for namespaced commands (/enok:spec)
+                const enokCommandsDir = path.join(claudeDir, 'commands', 'enok');
+                await fs.ensureDir(enokCommandsDir);
+
                 for (const [cmdName, cmdData] of Object.entries(commands)) {
                     const cmdContent = `---
 description: ${cmdData.description}
 ---
 ${cmdData.content}
 `;
-                    await fs.writeFile(path.join(claudeDir, 'commands', `${cmdName}.md`), cmdContent);
+                    await fs.writeFile(path.join(enokCommandsDir, `${cmdName}.md`), cmdContent);
                 }
 
                 console.log(chalk.green('✔ Installed Claude Code config (.claude/ with 6 agents & 8 commands)'));

@@ -29,15 +29,16 @@ Ce document résume les structures spécifiques générées pour chaque outil AI
 │   ├── documenter.md
 │   └── debugger.md
 └── commands/
-    ├── spec.md           # YAML frontmatter + instructions
-    ├── done.md
-    ├── status.md
-    ├── validate.md
-    ├── context.md
-    ├── memory.md
-    ├── list.md
-    └── commit.md
-CLAUDE.md                 # Guide principal
+    └── enok/           # Namespace "enok:"
+        ├── spec.md
+        ├── done.md
+        ├── status.md
+        ├── validate.md
+        ├── context.md
+        ├── memory.md
+        ├── list.md
+        └── commit.md
+CLAUDE.md                 # Guide principal (Orchestrator based)
 ```
 
 ### Format des Agents

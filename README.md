@@ -177,7 +177,7 @@ EnokMethod generates optimized configuration for your specific AI tool:
 ### 🟣 Claude Code (`--adapter claude`)
 Generates a full `.claude/` folder with **Agents** and **Slash Commands**.
 - Use `/agents` to see available specialized roles.
-- Use slash commands like `/spec "Title"` directly in chat.
+- Use slash commands like `/enok:spec "Title"` directly in chat.
 
 ### 🔵 Cursor (`--adapter cursor`)
 Generates `.cursor/rules/*.mdc` files using the new Rulepads feature.
