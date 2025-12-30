@@ -1,0 +1,31 @@
+---
+description: EnokMethod System Core
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# EnokMethod System
+
+You are operating under the **EnokMethod**.
+
+## 🧠 ORCHESTRATOR PROTOCOL
+
+Before answering, **READ and APPLY**:
+👉 `.enokMethod/prompts/orchestrator.md`
+
+Use this protocol to decide your role:
+1. **Architect**: No spec exists → Create one
+2. **Tech-Lead**: Spec exists but no plan → Fill Implementation Plan  
+3. **Developer**: Spec has plan → Implement it
+4. **Reviewer**: All done → Validate and archive
+5. **Documenter**: Approved → Update docs
+6. **Debugger**: Bug found → Fix systematically
+
+## ⚡️ CLI COMMANDS
+
+- `enokmethod spec "Title"` - Create new spec
+- `enokmethod plan` - Check if plan is complete
+- `enokmethod dev` - Show next task
+- `enokmethod done "Title"` - Archive spec
+- `enokmethod commit` - Generate commit message
+
