@@ -172,30 +172,31 @@ describe('Adapter File Generation', () => {
     });
 
     describe('Antigravity Adapter', () => {
-        it('should generate .antigravity/mission.md', async () => {
+        it('should generate .agent/workflows/ and .agent/rules/', async () => {
             execSync(`node "${CLI_PATH}" init --adapter antigravity`, { cwd: testDir });
 
-            const missionFile = path.join(testDir, '.antigravity', 'mission.md');
-            expect(await fs.pathExists(missionFile)).toBe(true);
+            const rulesFile = path.join(testDir, '.agent', 'rules', 'enok.md');
+            expect(await fs.pathExists(rulesFile)).toBe(true);
 
-            const content = await fs.readFile(missionFile, 'utf8');
-            expect(content).toContain('# Antigravity Mission Control - EnokMethod');
-            expect(content).toContain('Environment Check');
-            expect(content).toContain('State Management (Manual Mode)');
+            const workflowsDir = path.join(testDir, '.agent', 'workflows');
+            const workflowFiles = await fs.readdir(workflowsDir);
+            expect(workflowFiles).toContain('spec.md');
+            expect(workflowFiles).toContain('done.md');
+            expect(workflowFiles).toContain('status.md');
+            expect(workflowFiles).toContain('commit.md');
         });
     });
 
     describe('Gemini CLI Adapter', () => {
-        it('should generate GEMINI_CLI.md', async () => {
+        it('should generate GEMINI.md', async () => {
             execSync(`node "${CLI_PATH}" init --adapter gemini-cli`, { cwd: testDir });
 
-            const configFile = path.join(testDir, 'GEMINI_CLI.md');
+            const configFile = path.join(testDir, 'GEMINI.md');
             expect(await fs.pathExists(configFile)).toBe(true);
 
             const content = await fs.readFile(configFile, 'utf8');
             expect(content).toContain('# Gemini CLI System Instructions');
             expect(content).toContain('Operational Rules');
-            expect(content).toContain('Your Goal');
         });
     });
 

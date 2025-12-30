@@ -17,7 +17,7 @@ EnokMethod is not just a CLI tool; it is an **Operating System for AI Agents**. 
 Traditional AI coding is chaotic: you prompt, it hallucinates, you fix.
 **EnokMethod** inverts this. It uses **Context Energy Management** to ensure the AI only acts when it understands the full picture.
 
-### The Enok Flow
+### The EnokMethod Flow
 
 ```mermaid
 graph TD

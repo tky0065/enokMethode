@@ -608,47 +608,84 @@ enokmethod validate       # Validate project structure
             }
 
 
-            // 8. Adapter: Antigravity
+            // 8. Adapter: Antigravity (Agentic IDE)
             if (options.adapter === 'antigravity') {
-                const antigravityDir = path.join(targetDir, '.antigravity');
-                await fs.ensureDir(antigravityDir);
+                const agentDir = path.join(targetDir, '.agent');
+                const workflowsDir = path.join(agentDir, 'workflows');
+                const rulesDir = path.join(agentDir, 'rules');
 
-                const missionContent = `# Antigravity Mission Control - EnokMethod
+                await fs.ensureDir(workflowsDir);
+                await fs.ensureDir(rulesDir);
 
-You are an autonomous AI agent operating within the **EnokMethod** framework.
+                // 1. Generate Rules (Context)
+                const ruleContent = `# EnokMethod Rules
 
-## 1. Environment Check
-- **Capabilities**: Can you run shell commands?
-  - **YES**: Use \`enokmethod\` CLI commands to manage specs and state.
-  - **NO**: You MUST manually emulate the commands as described below.
+You are working in a project that follows the **EnokMethod**.
 
-## 2. Core Directives
-1. **Context IS King**:
-   - Read \`.enokMethod/CONTEXT.md\` for tech stack.
-   - Read \`.enokMethod/MEMORY.md\` for project history.
-   - Read \`CURRENT_SPEC.md\` (if exists) for your current task.
+## Core Context
+1. **Always** check \`.enokMethod/CONTEXT.md\` for tech stack details.
+2. **Always** check \`.enokMethod/MEMORY.md\` for project status.
+3. **Focus** on \`CURRENT_SPEC.md\` if it exists.
 
-2. **State Management (Manual Mode)**:
-   - If you cannot run \`enokmethod spec "Title"\`:
-     - Create \`CURRENT_SPEC.md\` manually with the EnokMethod template.
-   - If you cannot run \`enokmethod done "Title"\`:
-     - Move \`CURRENT_SPEC.md\` to \`.enokMethod/archive/YYYY-MM-DD_HH-mm-Title.md\`.
-     - Update \`.enokMethod/MEMORY.md\` by appending \`- [YYYY-MM-DD HH:mm] Completed: Title\`.
-
-## 3. Workflow
-1. **Analyze**: Read context files.
-2. **Plan**: If no spec exists, propose one.
-3. **Execute**: Implement the spec in \`CURRENT_SPEC.md\`.
-4. **Verify**: Ensure code meets spec.
-5. **Finalize**: Archive spec (run command or manual move).
+## Commands
+Use the provided workflows to interact with the project:
+- \`spec\`: Start a new task
+- \`done\`: Finish a task
+- \`status\`: Check status
+- \`commit\`: Commit changes
 `;
-                await fs.writeFile(path.join(antigravityDir, 'mission.md'), missionContent);
-                console.log(chalk.green('✔ Installed Antigravity config (.antigravity/mission.md)'));
+                await fs.writeFile(path.join(rulesDir, 'enok.md'), ruleContent);
+
+                // 2. Generate Workflows
+                const workflows = {
+                    spec: {
+                        desc: 'Start a new feature or task (EnokMethod)',
+                        steps: `1. Analyze the user request.
+2. Run the spec command with the title.
+// turbo
+enokmethod spec "Title of the task"
+`
+                    },
+                    done: {
+                        desc: 'Finish the current feature (EnokMethod)',
+                        steps: `1. Verify all tests pass.
+2. Run the done command.
+// turbo
+enokmethod done "Title of the task"
+`
+                    },
+                    status: {
+                        desc: 'Check project status (EnokMethod)',
+                        steps: `1. Check the current status.
+// turbo
+enokmethod status
+`
+                    },
+                    commit: {
+                        desc: 'Generate a conventional commit (EnokMethod)',
+                        steps: `1. Generate commit message from spec.
+// turbo
+enokmethod commit
+`
+                    }
+                };
+
+                for (const [name, data] of Object.entries(workflows)) {
+                    const content = `---
+description: ${data.desc}
+---
+${data.steps}`;
+                    await fs.writeFile(path.join(workflowsDir, `${name}.md`), content);
+                }
+
+                console.log(chalk.green('✔ Installed Antigravity config (.agent/rules & .agent/workflows)'));
             }
 
             // 9. Adapter: Gemini CLI
             if (options.adapter === 'gemini-cli') {
-                const geminiCliContent = `# Gemini CLI System Instructions
+                // User requested file be named GEMINI.md
+                // This file acts as the system instruction/context for gemini-cli
+                const geminiContent = `# Gemini CLI System Instructions
 
 You are a Gemini agent working on a project using **EnokMethod**.
 
@@ -668,8 +705,8 @@ You are a Gemini agent working on a project using **EnokMethod**.
 ## Your Goal
 Act as a senior developer. Autonomously move the project forward by checking the status, picking up the active spec (or creating one if needed), and writing high-quality code.
 `;
-                await fs.writeFile(path.join(targetDir, 'GEMINI_CLI.md'), geminiCliContent);
-                console.log(chalk.green('✔ Installed Gemini CLI config (GEMINI_CLI.md)'));
+                await fs.writeFile(path.join(targetDir, 'GEMINI.md'), geminiContent);
+                console.log(chalk.green('✔ Installed Gemini CLI config (GEMINI.md)'));
             }
 
             console.log(chalk.green('✔ EnokMethod successfully initialized!'));
