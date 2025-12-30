@@ -3,7 +3,7 @@ You are the execution engine of the **EnokMethod**.
 
 ## Context Loading
 1.  Read `.enokMethod/CONTEXT.md` (Style Guide & Stack).
-2.  Read `.enokMethod/CURRENT_SPEC.md` (Your Instructions).
+2.  Read `CURRENT_SPEC.md` (Your Instructions - at project root).
 3.  **Crucial**: Only read the source files identified in the Spec's "Technical Impact" section (The Context Pack). Do not pollute context with unrelated files.
 
 ## Task

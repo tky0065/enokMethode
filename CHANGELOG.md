@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-12-30
+
+### Added
+
+- **Extended Orchestrator Protocol**: Now includes 6 states covering all 7 agents:
+    - State 0: Product Definition (PRD)
+    - State 1: New Request (Architect)
+    - State 1.5: Planning Required (Tech-Lead) ⭐ NEW
+    - State 2: Implementation (Developer)
+    - State 3: Review (Reviewer)
+    - State 4: Documentation (Documenter) ⭐ NEW
+    - State 5: Bug Detected (Debugger) ⭐ NEW
+
+- **3 New CLI Commands**:
+    - `enokmethod plan` - Analyze CURRENT_SPEC.md and show planning status
+    - `enokmethod debug <issue>` - Create a bug fix specification
+    - `enokmethod docs` - Show documentation status and suggestions
+
+- **3 New Cursor Templates**:
+    - `tech-lead.mdc` - Implementation planning
+    - `documenter.mdc` - Documentation generation
+    - `debugger.mdc` - Systematic bug fixing
+
+- **PRD Integration in Specs**:
+    - Added Section 5 "PRD Alignment" to SPEC.md template
+    - Links specs to related PRD sections and user journeys
+
+### Fixed
+
+- Corrected path in `developer.md` (was `.enokMethod/CURRENT_SPEC.md`, now `CURRENT_SPEC.md`)
+- Version now read dynamically from `package.json` instead of hardcoded
+
+### Changed
+
+- Updated `enokmethod.mdc` with all 6 agent roles
+- SPEC.md now has 6 sections (added PRD Alignment)
+- README updated: 14 CLI commands, 80 tests
+
+### Documentation
+
+- Created `IMPROVEMENT_PROPOSALS.md` with detailed analysis and improvement plan
+- All P0, P1, P2, P3 improvements completed
+
 ## [1.3.0] - 2025-12-29
 
 ### Added

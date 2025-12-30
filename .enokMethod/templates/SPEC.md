@@ -26,7 +26,14 @@
 - [ ] Functionality X passes unit test.
 - [ ] Error Y is handled gracefully (toast notification).
 
-## 5. Implementation Plan (AI Generated)
+## 5. PRD Alignment (Optional)
+<!-- If PRD.md exists, link this spec to it -->
+- **Related PRD Section**: [e.g., "4. Key Features - Feature 2"]
+- **User Journey**: [e.g., "5. User Flows - Scenario 1"]
+- **Success Criteria**: [Which PRD goals does this address?]
+
+## 6. Implementation Plan (AI Generated)
 <!-- AI will fill this section with step-by-step todos. -->
 - [ ] Step 1
 - [ ] Step 2
+

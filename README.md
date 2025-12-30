@@ -23,20 +23,31 @@ Traditional AI coding is chaotic: you prompt, it hallucinates, you fix.
 graph TD
     User([User Request]) --> Orchestrator{⚡️ Orchestrator Protocol}
     
+    Orchestrator -- "PRD Requested" --> PM[📋 Product Manager]
     Orchestrator -- "No Spec Exists" --> Architect[👷 Architect Agent]
-    Orchestrator -- "Spec is Active" --> Developer[👨‍💻 Developer Agent]
-    Orchestrator -- "Task Finished" --> Reviewer[🕵️ Reviewer Agent]
+    Orchestrator -- "Spec Needs Plan" --> TechLead[🎯 Tech-Lead Agent]
+    Orchestrator -- "Plan Ready" --> Developer[👨‍💻 Developer Agent]
+    Orchestrator -- "Code Complete" --> Reviewer[🕵️ Reviewer Agent]
+    Orchestrator -- "Bug Found" --> Debugger[🐛 Debugger Agent]
+    Orchestrator -- "Needs Docs" --> Documenter[📚 Documenter Agent]
     
+    PM --> |Creates| PRD[📄 PRD.md]
     Architect --> |Creates| Spec[📝 CURRENT_SPEC.md]
-    Spec --> |Guides| Developer
+    TechLead --> |Fills| Plan[📋 Implementation Plan]
     Developer --> |Writes| Code[💾 Source Code]
-    Code --> |Validates| Reviewer
-    Reviewer --> |Archives| Memory[🧠 MEMORY.md]
+    Reviewer --> |Validates| Quality{Quality OK?}
+    Quality -- Yes --> Documenter
+    Quality -- No --> Debugger
+    Debugger --> |Fixes| Code
+    Documenter --> |Updates| Docs[📖 README/Docs]
+    Docs --> Memory[🧠 MEMORY.md]
     
     subgraph "Enok Core"
     Context[CONTEXT.md] -.-> Architect
+    Context -.-> TechLead
     Context -.-> Developer
     Context -.-> Reviewer
+    PRD -.-> Architect
     end
 ```
 
@@ -57,14 +68,27 @@ stateDiagram-v2
     
     state Analysis {
         [*] --> CheckState
-        CheckState --> InnovationMode : No CURRENT_SPEC.md
-        CheckState --> ExecutionMode : CURRENT_SPEC.md found
-        CheckState --> CompletionMode : Implementation done
+        CheckState --> ProductMode : PRD Requested
+        CheckState --> DesignMode : No CURRENT_SPEC.md
+        CheckState --> PlanningMode : Spec has no plan
+        CheckState --> ExecutionMode : Plan is ready
+        CheckState --> ReviewMode : Implementation done
+        CheckState --> DebugMode : Bug reported
     }
     
-    state InnovationMode {
-        Architect --> DefineSpecs
-        DefineSpecs --> Plan
+    state ProductMode {
+        ProductManager --> CreatePRD
+        CreatePRD --> DefineGoals
+    }
+    
+    state DesignMode {
+        Architect --> AnalyzeRequest
+        AnalyzeRequest --> CreateSpec
+    }
+    
+    state PlanningMode {
+        TechLead --> AnalyzeSpec
+        AnalyzeSpec --> FillPlan
     }
     
     state ExecutionMode {
@@ -73,15 +97,24 @@ stateDiagram-v2
         WriteCode --> Test
     }
     
-    state CompletionMode {
+    state ReviewMode {
         Reviewer --> Validate
-        Validate --> Commit
-        Commit --> Archive
+        Validate --> CheckDocs
+        CheckDocs --> Archive
     }
     
-    InnovationMode --> Idle : "Plan Ready"
-    ExecutionMode --> Idle : "Step Done"
-    CompletionMode --> [*] : "Task Closed"
+    state DebugMode {
+        Debugger --> Reproduce
+        Reproduce --> Isolate
+        Isolate --> Fix
+    }
+    
+    ProductMode --> Idle : "PRD Ready"
+    DesignMode --> PlanningMode : "Spec Created"
+    PlanningMode --> ExecutionMode : "Plan Done"
+    ExecutionMode --> ReviewMode : "Code Done"
+    ReviewMode --> [*] : "Task Closed"
+    DebugMode --> ReviewMode : "Bug Fixed"
 ```
 
 ---
@@ -105,8 +138,8 @@ stateDiagram-v2
   - **Aider**
   - **Antigravity** (Experimental Agentic IDE)
   - **Gemini CLI** (For @google/gemini-cli)
-- 📦 **11 CLI Commands**: Including `enokmethod dev` and `enokmethod prd` for high-level planning.
-- ✅ **Fully Tested**: 78 tests, 99% coverage.
+- 📦 **14 CLI Commands**: Full workflow support including `enokmethod debug` and `enokmethod docs`.
+- ✅ **Fully Tested**: 80 tests, 99% coverage.
 
 ---
 

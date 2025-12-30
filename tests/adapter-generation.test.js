@@ -36,7 +36,7 @@ describe('Adapter File Generation', () => {
             expect(agents).toContain('debugger.md');
         });
 
-        it('should generate 8 commands in .claude/commands/', async () => {
+        it('should generate 11 commands in .claude/commands/', async () => {
             execSync(`node "${CLI_PATH}" init --adapter claude`, { cwd: testDir });
 
             const commandsDir = path.join(testDir, '.claude', 'commands');
@@ -45,9 +45,10 @@ describe('Adapter File Generation', () => {
             expect(await fs.pathExists(enokDir)).toBe(true);
             const commands = await fs.readdir(enokDir);
 
-            expect(commands).toHaveLength(9);
+            expect(commands).toHaveLength(11);
             expect(commands).toContain('spec.md');
             expect(commands).toContain('done.md');
+            expect(commands).toContain('prd.md');
             expect(commands).toContain('status.md');
             expect(commands).toContain('validate.md');
             expect(commands).toContain('context.md');
@@ -55,6 +56,7 @@ describe('Adapter File Generation', () => {
             expect(commands).toContain('list.md');
             expect(commands).toContain('commit.md');
             expect(commands).toContain('dev.md');
+            expect(commands).toContain('plan.md');
         });
 
         it('should generate CLAUDE.md guide', async () => {

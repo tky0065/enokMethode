@@ -5,6 +5,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const { detectTechStack } = require('./detector');
+const pkg = require('../package.json');
 
 const program = new Command();
 
@@ -19,7 +20,7 @@ const getNow = () => {
 program
     .name('enokmethod')
     .description('CLI for EnokMethod - Context-First Spec-Driven Development')
-    .version('1.0.0');
+    .version(pkg.version);
 
 // COMMAND: INIT
 program
@@ -312,6 +313,19 @@ You are now in Developer execution mode.
 2. Look for "👉 CURRENT FOCUS" in the output.
 3. IMMEDIATELY implement that specific task.
 4. When done, mark it as [x] in CURRENT_SPEC.md.`
+                    },
+                    plan: {
+                        description: 'Analyze CURRENT_SPEC.md and show what needs planning',
+                        content: `# Enok Plan
+Run the following command to analyze the spec:
+\`enokmethod plan\`
+
+This will:
+1. Check if CURRENT_SPEC.md exists
+2. Analyze which sections are complete
+3. Show if Implementation Plan needs to be filled
+
+If the plan is incomplete, ask the Tech-Lead agent to complete it.`
                     }
                 };
 
@@ -832,6 +846,91 @@ program
         }
     });
 
+// COMMAND: PLAN
+program
+    .command('plan')
+    .description('Analyze CURRENT_SPEC.md and show what needs planning')
+    .action(async () => {
+        const targetDir = process.cwd();
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
+
+        try {
+            console.log(chalk.blue.bold('\n📋 EnokMethod Planning Assistant\n'));
+
+            if (!(await fs.pathExists(specPath))) {
+                console.log(chalk.red('❌ No CURRENT_SPEC.md found.'));
+                console.log(chalk.gray('   Run: enokmethod spec "Your idea" first.'));
+                return;
+            }
+
+            const specContent = await fs.readFile(specPath, 'utf8');
+
+            // Extract Title
+            const titleMatch = specContent.match(/\*\*Goal\*\*:\s*(.+)/);
+            const title = titleMatch ? titleMatch[1].trim() : 'Untitled Spec';
+            console.log(chalk.white(`📝 Spec: ${chalk.bold(title)}\n`));
+
+            // Check sections
+            const sections = {
+                'Objective': /## 1\. Objective/,
+                'Requirements': /## 2\. Detailed Requirements/,
+                'Technical Impact': /## 3\. Technical Impact/,
+                'Acceptance Criteria': /## 4\. Acceptance Criteria/,
+                'Implementation Plan': /## 5\. Implementation Plan/
+            };
+
+            console.log(chalk.cyan('📊 Section Analysis:\n'));
+
+            let needsPlanning = false;
+
+            for (const [name, regex] of Object.entries(sections)) {
+                const hasSection = regex.test(specContent);
+                
+                if (hasSection) {
+                    // Check if section has content (not just placeholders)
+                    const sectionStart = specContent.search(regex);
+                    const nextSectionRegex = /## \d+\./g;
+                    nextSectionRegex.lastIndex = sectionStart + 10;
+                    const nextMatch = nextSectionRegex.exec(specContent);
+                    const sectionEnd = nextMatch ? nextMatch.index : specContent.length;
+                    const sectionContent = specContent.slice(sectionStart, sectionEnd);
+                    
+                    // Check for placeholder content
+                    const hasPlaceholders = /\[.*\]/.test(sectionContent) && !/\[x\]/.test(sectionContent);
+                    const hasEmptyChecklist = /- \[ \] Step 1\s*\n- \[ \] Step 2/.test(sectionContent);
+                    
+                    if (hasPlaceholders || hasEmptyChecklist) {
+                        console.log(chalk.yellow('⚠'), name, chalk.gray('(needs content)'));
+                        if (name === 'Implementation Plan') needsPlanning = true;
+                    } else {
+                        console.log(chalk.green('✓'), name);
+                    }
+                } else {
+                    console.log(chalk.red('✗'), name, chalk.gray('(missing)'));
+                    if (name === 'Implementation Plan') needsPlanning = true;
+                }
+            }
+
+            console.log('');
+
+            if (needsPlanning) {
+                console.log(chalk.yellow.bold('⚠️  Implementation Plan needs completion!\n'));
+                console.log(chalk.cyan('The Tech-Lead agent should:'));
+                console.log(chalk.white('  1. Analyze which files need to be created/modified'));
+                console.log(chalk.white('  2. Break down into small, atomic steps'));
+                console.log(chalk.white('  3. List the Context Pack (files Developer needs)'));
+                console.log('');
+                console.log(chalk.gray('Tip: Ask your AI agent to "Complete the implementation plan"'));
+            } else {
+                console.log(chalk.green.bold('✅ Spec is ready for implementation!'));
+                console.log(chalk.cyan('   Run: enokmethod dev'));
+            }
+
+        } catch (err) {
+            console.error(chalk.red('Failed to analyze spec:'), err);
+        }
+    });
+
 // COMMAND: DONE
 program
     .command('done <name>')
@@ -1328,4 +1427,130 @@ program
         }
     });
 
+// COMMAND: DEBUG
+program
+    .command('debug <issue>')
+    .description('Create a bug fix specification')
+    .action(async (issue) => {
+        const targetDir = process.cwd();
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
+
+        try {
+            if (await fs.pathExists(specPath)) {
+                console.log(chalk.yellow('Warning: CURRENT_SPEC.md already exists.'));
+                console.log(chalk.gray('Finish or archive current spec first: enokmethod done "Name"'));
+                return;
+            }
+
+            const debugSpec = `# Bug Fix Specification
+
+> **Type**: Bug Fix
+> **Created**: ${new Date().toISOString().replace('T', ' ').slice(0, 16)}
+
+## 1. Issue Description
+**Problem**: ${issue}
+**Reported By**: [User/Test/Monitor]
+**Severity**: [Critical/High/Medium/Low]
+
+## 2. Reproduction Steps
+- [ ] Step 1: [How to trigger the bug]
+- [ ] Step 2: [Expected vs Actual behavior]
+
+## 3. Root Cause Analysis
+<!-- Debugger agent will fill this -->
+- **Location**: [File:Line]
+- **Cause**: [Why it happens]
+
+## 4. Fix Plan
+- [ ] Identify affected code
+- [ ] Implement minimal fix
+- [ ] Add regression test
+- [ ] Verify fix doesn't break other features
+
+## 5. Acceptance Criteria
+- [ ] Bug no longer reproducible
+- [ ] Regression test passes
+- [ ] No new issues introduced
+`;
+
+            await fs.writeFile(specPath, debugSpec);
+            console.log(chalk.green('✔ Created bug fix spec: CURRENT_SPEC.md'));
+            console.log(chalk.blue('\nNext steps:'));
+            console.log(chalk.gray('1. Fill in reproduction steps'));
+            console.log(chalk.gray('2. Ask AI to analyze and fix (Debugger role)'));
+            console.log(chalk.gray('3. Run: enokmethod done "Fix: ' + issue.slice(0, 30) + '..."'));
+
+        } catch (err) {
+            console.error(chalk.red('Failed to create debug spec:'), err);
+        }
+    });
+
+// COMMAND: DOCS
+program
+    .command('docs')
+    .description('Show documentation status and suggestions')
+    .option('--readme', 'Focus on README.md updates')
+    .option('--changelog', 'Focus on CHANGELOG.md updates')
+    .action(async (options) => {
+        const targetDir = process.cwd();
+        const readmePath = path.join(targetDir, 'README.md');
+        const changelogPath = path.join(targetDir, 'CHANGELOG.md');
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
+        const archiveDir = path.join(targetDir, '.enokMethod/archive');
+
+        try {
+            console.log(chalk.blue.bold('\n📚 EnokMethod Documentation Status\n'));
+
+            // Check README
+            if (await fs.pathExists(readmePath)) {
+                const stats = await fs.stat(readmePath);
+                const lastModified = stats.mtime.toISOString().split('T')[0];
+                console.log(chalk.green('✓'), 'README.md', chalk.gray(`(last modified: ${lastModified})`));
+            } else {
+                console.log(chalk.red('✗'), 'README.md', chalk.gray('(missing)'));
+            }
+
+            // Check CHANGELOG
+            if (await fs.pathExists(changelogPath)) {
+                const stats = await fs.stat(changelogPath);
+                const lastModified = stats.mtime.toISOString().split('T')[0];
+                console.log(chalk.green('✓'), 'CHANGELOG.md', chalk.gray(`(last modified: ${lastModified})`));
+            } else {
+                console.log(chalk.yellow('⚠'), 'CHANGELOG.md', chalk.gray('(not found - consider creating one)'));
+            }
+
+            // Check for recent completed specs that might need documentation
+            if (await fs.pathExists(archiveDir)) {
+                const archiveFiles = await fs.readdir(archiveDir);
+                const recentSpecs = archiveFiles.slice(-3).reverse();
+                
+                if (recentSpecs.length > 0) {
+                    console.log(chalk.cyan('\n📝 Recently Completed Features (may need docs):'));
+                    for (const file of recentSpecs) {
+                        const match = file.match(/^(\d{4}-\d{2}-\d{2})_\d{2}-\d{2}-(.+)\.md$/);
+                        if (match) {
+                            const [, date, name] = match;
+                            console.log(chalk.gray(`   - ${name.replace(/-/g, ' ')} (${date})`));
+                        }
+                    }
+                }
+            }
+
+            // Suggestions
+            console.log(chalk.cyan('\n💡 Suggestions:'));
+            
+            if (await fs.pathExists(specPath)) {
+                console.log(chalk.white('   • Document current feature after completion'));
+            }
+            
+            console.log(chalk.white('   • Ask AI: "Update README with recent changes"'));
+            console.log(chalk.white('   • Ask AI: "Generate CHANGELOG entry for latest feature"'));
+            console.log('');
+
+        } catch (err) {
+            console.error(chalk.red('Failed to check docs:'), err);
+        }
+    });
+
 program.parse(process.argv);
+
