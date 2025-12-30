@@ -29,7 +29,7 @@ Ce document résume les structures spécifiques générées pour chaque outil AI
 │   ├── documenter.md
 │   └── debugger.md
 └── commands/
-    └── enok/           # Namespace "enok:"
+    └── enokMethod/     # Namespace "enokMethod:"
         ├── spec.md
         ├── done.md
         ├── status.md

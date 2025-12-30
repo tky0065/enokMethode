@@ -288,8 +288,8 @@ Options:
                     }
                 };
 
-                // Ensure enok namespace directory exists for namespaced commands (/enok:spec)
-                const enokCommandsDir = path.join(claudeDir, 'commands', 'enok');
+                // Ensure enokMethod namespace directory exists for namespaced commands (/enokMethod:spec)
+                const enokCommandsDir = path.join(claudeDir, 'commands', 'enokMethod');
                 await fs.ensureDir(enokCommandsDir);
 
                 for (const [cmdName, cmdData] of Object.entries(commands)) {

@@ -40,7 +40,7 @@ describe('Adapter File Generation', () => {
             execSync(`node "${CLI_PATH}" init --adapter claude`, { cwd: testDir });
 
             const commandsDir = path.join(testDir, '.claude', 'commands');
-            const enokDir = path.join(commandsDir, 'enok'); // New namespace dir
+            const enokDir = path.join(commandsDir, 'enokMethod'); // New namespace dir
             
             expect(await fs.pathExists(enokDir)).toBe(true);
             const commands = await fs.readdir(enokDir);

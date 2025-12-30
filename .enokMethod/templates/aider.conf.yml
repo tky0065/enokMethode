@@ -35,8 +35,8 @@ aliases:
     commit: enokmethod commit
     
     # Namespaced aliases (Explicit)
-    "enok:spec": enokmethod spec "$1"
-    "enok:done": enokmethod done "$1"
-    "enok:status": enokmethod status
-    "enok:validate": enokmethod validate
-    "enok:commit": enokmethod commit
+    "enokMethod:spec": enokmethod spec "$1"
+    "enokMethod:done": enokmethod done "$1"
+    "enokMethod:status": enokmethod status
+    "enokMethod:validate": enokmethod validate
+    "enokMethod:commit": enokmethod commit
