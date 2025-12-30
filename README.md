@@ -102,7 +102,8 @@ stateDiagram-v2
   - **Cursor** & **Windsurf** (Best for IDE flow)
   - **GitHub Copilot**
   - **Aider**
-- 📦 **10 CLI Commands**: `init`, `spec`, `done`, `status`, `list`, `context`, `memory`, `validate`, `commit`, `dev`.
+- 📦 **10 CLI Commands**: Including the powerful `enokmethod dev` dashboard.
+- ✅ **Fully Tested**: 76 tests, 99% coverage.
 
 ---
 
