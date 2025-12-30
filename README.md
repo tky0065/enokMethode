@@ -103,7 +103,9 @@ stateDiagram-v2
   - **Cursor** & **Windsurf** (Best for IDE flow)
   - **GitHub Copilot**
   - **Aider**
-- 📦 **10 CLI Commands**: Including the powerful `enokmethod dev` dashboard.
+  - **Antigravity** (Experimental Agentic IDE)
+  - **Gemini CLI** (For @google/gemini-cli)
+- 📦 **10 CLI Commands**: Including `enokmethod dev` which acts as the Developer Agent's todo list.
 - ✅ **Fully Tested**: 78 tests, 99% coverage.
 
 ---
@@ -194,6 +196,15 @@ Generates `.windsurfrules` and Cascade flow profiles.
 Generates `CONVENTIONS.md` and setups `--read` flags automatically.
 - Integrates deeply with git workflows.
 
+### 🌌 Antigravity (`--adapter antigravity`)
+Generates a Mission Control file for Google's agentic IDE.
+- Provides explicit instructions for autonomous agents in restricted environments.
+- Defines state management protocols for "manual mode" execution.
+
+### 💎 Gemini CLI (`--adapter gemini-cli`)
+Generates customized system instructions for the `@google/gemini-cli`.
+- Optimized prompts for direct terminal interaction with Gemini agents.
+
 ---
 
 ## 🤝 Contributing
@@ -202,4 +213,4 @@ We love contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detail
 
 ## 📄 License
 
-MIT © [Yacouba Kone](https://github.com/tky0065)
+MIT © [EnokMethod](https://github.com/tky0065)

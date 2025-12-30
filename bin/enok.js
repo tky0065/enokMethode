@@ -287,12 +287,16 @@ Options:
 - \`--no-verify\`: Skip git hooks`
                     },
                     dev: {
-                        description: 'Show development dashboard and active task',
-                        content: `# Enok Dev Dashboard
-Run the following command to see progress:
+                        description: 'Start implementing the next task in CURRENT_SPEC.md',
+                        content: `# Enok Developer Mode
+You are now in Developer execution mode.
+
+1. Run this command to see your next task:
 \`enokmethod dev\`
 
-This shows the progress bar and the next task to implement based on CURRENT_SPEC.md.`
+2. Look for "👉 CURRENT FOCUS" in the output.
+3. IMMEDIATELY implement that specific task.
+4. When done, mark it as [x] in CURRENT_SPEC.md.`
                     }
                 };
 
@@ -601,6 +605,71 @@ enokmethod validate       # Validate project structure
                 await fs.writeFile(path.join(aiderDir, 'README.md'), aiderReadme);
 
                 console.log(chalk.green('✔ Installed Aider config (.aider.conf.yml + CONVENTIONS.md + 6 role prompts)'));
+            }
+
+
+            // 8. Adapter: Antigravity
+            if (options.adapter === 'antigravity') {
+                const antigravityDir = path.join(targetDir, '.antigravity');
+                await fs.ensureDir(antigravityDir);
+
+                const missionContent = `# Antigravity Mission Control - EnokMethod
+
+You are an autonomous AI agent operating within the **EnokMethod** framework.
+
+## 1. Environment Check
+- **Capabilities**: Can you run shell commands?
+  - **YES**: Use \`enokmethod\` CLI commands to manage specs and state.
+  - **NO**: You MUST manually emulate the commands as described below.
+
+## 2. Core Directives
+1. **Context IS King**:
+   - Read \`.enokMethod/CONTEXT.md\` for tech stack.
+   - Read \`.enokMethod/MEMORY.md\` for project history.
+   - Read \`CURRENT_SPEC.md\` (if exists) for your current task.
+
+2. **State Management (Manual Mode)**:
+   - If you cannot run \`enokmethod spec "Title"\`:
+     - Create \`CURRENT_SPEC.md\` manually with the EnokMethod template.
+   - If you cannot run \`enokmethod done "Title"\`:
+     - Move \`CURRENT_SPEC.md\` to \`.enokMethod/archive/YYYY-MM-DD_HH-mm-Title.md\`.
+     - Update \`.enokMethod/MEMORY.md\` by appending \`- [YYYY-MM-DD HH:mm] Completed: Title\`.
+
+## 3. Workflow
+1. **Analyze**: Read context files.
+2. **Plan**: If no spec exists, propose one.
+3. **Execute**: Implement the spec in \`CURRENT_SPEC.md\`.
+4. **Verify**: Ensure code meets spec.
+5. **Finalize**: Archive spec (run command or manual move).
+`;
+                await fs.writeFile(path.join(antigravityDir, 'mission.md'), missionContent);
+                console.log(chalk.green('✔ Installed Antigravity config (.antigravity/mission.md)'));
+            }
+
+            // 9. Adapter: Gemini CLI
+            if (options.adapter === 'gemini-cli') {
+                const geminiCliContent = `# Gemini CLI System Instructions
+
+You are a Gemini agent working on a project using **EnokMethod**.
+
+## Project Structure
+- \`.enokMethod/CONTEXT.md\`: Technical constraints and stack.
+- \`.enokMethod/MEMORY.md\`: Project history and current status.
+- \`CURRENT_SPEC.md\`: The active task you should focus on.
+
+## Operational Rules
+1. **Always** read the Context and Memory files at the start of a session.
+2. **Use Tools**: Use your accessible tools (File System, Terminal) to explore and edit.
+3. **CLI Usage**: This project uses \`enokmethod\` CLI.
+   - Start task: \`enokmethod spec "Task Name"\`
+   - Check status: \`enokmethod status\`
+   - Finish task: \`enokmethod done "Task Name"\`
+
+## Your Goal
+Act as a senior developer. Autonomously move the project forward by checking the status, picking up the active spec (or creating one if needed), and writing high-quality code.
+`;
+                await fs.writeFile(path.join(targetDir, 'GEMINI_CLI.md'), geminiCliContent);
+                console.log(chalk.green('✔ Installed Gemini CLI config (GEMINI_CLI.md)'));
             }
 
             console.log(chalk.green('✔ EnokMethod successfully initialized!'));

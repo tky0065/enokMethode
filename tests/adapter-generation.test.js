@@ -171,9 +171,37 @@ describe('Adapter File Generation', () => {
         });
     });
 
+    describe('Antigravity Adapter', () => {
+        it('should generate .antigravity/mission.md', async () => {
+            execSync(`node "${CLI_PATH}" init --adapter antigravity`, { cwd: testDir });
+
+            const missionFile = path.join(testDir, '.antigravity', 'mission.md');
+            expect(await fs.pathExists(missionFile)).toBe(true);
+
+            const content = await fs.readFile(missionFile, 'utf8');
+            expect(content).toContain('# Antigravity Mission Control - EnokMethod');
+            expect(content).toContain('Environment Check');
+            expect(content).toContain('State Management (Manual Mode)');
+        });
+    });
+
+    describe('Gemini CLI Adapter', () => {
+        it('should generate GEMINI_CLI.md', async () => {
+            execSync(`node "${CLI_PATH}" init --adapter gemini-cli`, { cwd: testDir });
+
+            const configFile = path.join(testDir, 'GEMINI_CLI.md');
+            expect(await fs.pathExists(configFile)).toBe(true);
+
+            const content = await fs.readFile(configFile, 'utf8');
+            expect(content).toContain('# Gemini CLI System Instructions');
+            expect(content).toContain('Operational Rules');
+            expect(content).toContain('Your Goal');
+        });
+    });
+
     describe('All Adapters', () => {
         it('should always generate core .enokMethod structure', async () => {
-            const adapters = ['claude', 'aider', 'windsurf', 'cursor', 'copilot', 'gemini', 'general'];
+            const adapters = ['claude', 'aider', 'windsurf', 'cursor', 'copilot', 'gemini', 'general', 'antigravity', 'gemini-cli'];
 
             for (const adapter of adapters) {
                 await fs.remove(testDir);
