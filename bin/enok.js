@@ -93,13 +93,97 @@ program
                 console.log(chalk.yellow('EnokMethod core is already initialized.'));
             }
 
-            // 2. Adapter: Cursor
+            // 2. Adapter: Cursor (New format with .cursor/rules/*.mdc)
             if (options.adapter === 'cursor') {
+                const cursorDir = path.join(targetDir, '.cursor');
+                const cursorRulesDir = path.join(cursorDir, 'rules');
+                await fs.ensureDir(cursorRulesDir);
+
+                // Copy legacy .cursorrules for backward compatibility
                 await fs.copy(
                     path.join(templatesDir, 'cursorrules'),
                     path.join(targetDir, '.cursorrules')
                 );
-                console.log(chalk.green('✔ Installed Cursor rules (.cursorrules)'));
+
+                // Copy new .mdc format rules from templates/cursor/
+                const cursorTemplatesDir = path.join(templatesDir, 'cursor');
+                if (await fs.pathExists(cursorTemplatesDir)) {
+                    const mdcFiles = await fs.readdir(cursorTemplatesDir);
+                    for (const file of mdcFiles) {
+                        if (file.endsWith('.mdc')) {
+                            await fs.copy(
+                                path.join(cursorTemplatesDir, file),
+                                path.join(cursorRulesDir, file)
+                            );
+                        }
+                    }
+                } else {
+                    // Generate .mdc files dynamically if templates don't exist
+                    const roles = ['architect', 'tech-lead', 'developer', 'reviewer', 'documenter', 'debugger'];
+                    for (const role of roles) {
+                        const promptContent = await fs.readFile(
+                            path.join(promptsDir, `${role}.md`),
+                            'utf8'
+                        );
+
+                        // Create Cursor .mdc format with frontmatter
+                        const mdcContent = `---
+description: EnokMethod ${role} role for AI assistance
+globs: ["**/*"]
+alwaysApply: false
+---
+
+# ${role.charAt(0).toUpperCase() + role.slice(1)} Role
+
+${promptContent}
+`;
+                        await fs.writeFile(
+                            path.join(cursorRulesDir, `${role}.mdc`),
+                            mdcContent
+                        );
+                    }
+
+                    // Create main enokmethod.mdc rule (always apply)
+                    const mainMdcContent = `---
+description: EnokMethod Project Rules
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# EnokMethod - Context-First Spec-Driven Development
+
+You are an expert AI developer following the **EnokMethod** methodology.
+
+## Core Mandate
+
+Before answering any technical question, verify you have read:
+- \`.enokMethod/CONTEXT.md\` - Project tech stack and conventions
+- \`.enokMethod/MEMORY.md\` - Current project state and history
+
+If \`CURRENT_SPEC.md\` exists, your ONLY goal is to implement it.
+
+## Available Commands
+
+- \`enokmethod spec "title"\` - Create new specification
+- \`enokmethod done "name"\` - Archive completed spec
+- \`enokmethod status\` - Check project status
+- \`enokmethod validate\` - Validate project structure
+- \`enokmethod commit\` - Generate commit message
+
+## Rules
+
+1. **Context First**: Always check MEMORY.md before starting
+2. **Atomic Changes**: Do not refactor unrelated code
+3. **No Hallucinations**: If a library is not in Tech Stack, ASK first
+4. **Clean Up**: Remove unused imports and dead code immediately
+`;
+                    await fs.writeFile(
+                        path.join(cursorRulesDir, 'enokmethod.mdc'),
+                        mainMdcContent
+                    );
+                }
+
+                console.log(chalk.green('✔ Installed Cursor config (.cursorrules + .cursor/rules/*.mdc)'));
             }
 
             // 3. Adapter: Claude Code
@@ -114,8 +198,8 @@ program
                     path.join(targetDir, 'CLAUDE.md')
                 );
 
-                // Generate Agent Wrappers for Claude
-                const agents = ['architect', 'tech-lead', 'developer'];
+                // Generate ALL Agent Wrappers for Claude (6 agents)
+                const agents = ['architect', 'tech-lead', 'developer', 'reviewer', 'documenter', 'debugger'];
                 for (const agent of agents) {
                     const promptContent = await fs.readFile(
                         path.join(promptsDir, `${agent}.md`),
@@ -131,26 +215,89 @@ ${promptContent}
                     await fs.writeFile(path.join(claudeDir, 'agents', `${agent}.md`), agentContent);
                 }
 
-                // Generate Commands for Claude
-                const specCmd = `---
-description: Create a new specification using EnokMethod
----
-# Enok Spec
+                // Generate ALL Commands for Claude
+                const commands = {
+                    spec: {
+                        description: 'Create a new specification using EnokMethod',
+                        content: `# Enok Spec
 Run the following command to create a spec:
 \`enokmethod spec "$1"\`
-`;
-                await fs.writeFile(path.join(claudeDir, 'commands', 'spec.md'), specCmd);
 
-                const doneCmd = `---
-description: Complete the current specification
----
-# Enok Done
+This will create a new CURRENT_SPEC.md file with the given title.`
+                    },
+                    done: {
+                        description: 'Complete the current specification',
+                        content: `# Enok Done
 Run the following command to finish the spec:
 \`enokmethod done "$1"\`
-`;
-                await fs.writeFile(path.join(claudeDir, 'commands', 'done.md'), doneCmd);
 
-                console.log(chalk.green('✔ Installed Claude Code config (.claude/ & CLAUDE.md)'));
+This will archive CURRENT_SPEC.md and update MEMORY.md.`
+                    },
+                    status: {
+                        description: 'Show project status and active spec',
+                        content: `# Enok Status
+Run the following command to see the project status:
+\`enokmethod status\`
+
+This displays the active spec, recent activity, and completed specs count.`
+                    },
+                    validate: {
+                        description: 'Validate EnokMethod project structure',
+                        content: `# Enok Validate
+Run the following command to validate the project:
+\`enokmethod validate\`
+
+This checks if all required files and directories are present.`
+                    },
+                    context: {
+                        description: 'Display project context (CONTEXT.md)',
+                        content: `# Enok Context
+Run the following command to view the project context:
+\`enokmethod context\`
+
+This displays the content of .enokMethod/CONTEXT.md.`
+                    },
+                    memory: {
+                        description: 'Display project memory (MEMORY.md)',
+                        content: `# Enok Memory
+Run the following command to view the project memory:
+\`enokmethod memory\`
+
+This displays the content of .enokMethod/MEMORY.md.`
+                    },
+                    list: {
+                        description: 'List archived specifications',
+                        content: `# Enok List
+Run the following command to list archived specs:
+\`enokmethod list\`
+
+Options:
+- \`--limit <n>\`: Limit number of results (default: 10)
+- \`--search <term>\`: Search in spec names`
+                    },
+                    commit: {
+                        description: 'Generate conventional commit message',
+                        content: `# Enok Commit
+Run the following command to generate a commit message:
+\`enokmethod commit\`
+
+This generates a conventional commit message based on CURRENT_SPEC.md.
+Options:
+- \`-m <msg>\`: Use custom commit message
+- \`--no-verify\`: Skip git hooks`
+                    }
+                };
+
+                for (const [cmdName, cmdData] of Object.entries(commands)) {
+                    const cmdContent = `---
+description: ${cmdData.description}
+---
+${cmdData.content}
+`;
+                    await fs.writeFile(path.join(claudeDir, 'commands', `${cmdName}.md`), cmdContent);
+                }
+
+                console.log(chalk.green('✔ Installed Claude Code config (.claude/ with 6 agents & 8 commands)'));
             }
 
             // 3.5 Adapter: Gemini
@@ -162,25 +309,63 @@ Run the following command to finish the spec:
                 console.log(chalk.green('✔ Installed Gemini config (GEMINI.md)'));
             }
 
-            // 4. Adapter: GitHub Copilot
+            // 4. Adapter: GitHub Copilot (with role-specific .instructions.md files)
             if (options.adapter === 'copilot') {
                 const githubDir = path.join(targetDir, '.github');
                 await fs.ensureDir(githubDir);
 
-                // Read the cursorrules template as base for Copilot instructions
-                const cursorRulesPath = path.join(templatesDir, 'cursorrules');
-                let copilotContent = await fs.readFile(cursorRulesPath, 'utf8');
+                // Use dedicated Copilot template if available, else generate
+                const copilotTemplatePath = path.join(templatesDir, 'copilot-instructions.md');
+                if (await fs.pathExists(copilotTemplatePath)) {
+                    await fs.copy(copilotTemplatePath, path.join(githubDir, 'copilot-instructions.md'));
+                } else {
+                    // Fallback: Generate from base template
+                    const cursorRulesPath = path.join(templatesDir, 'cursorrules');
+                    let copilotContent = await fs.readFile(cursorRulesPath, 'utf8');
+                    copilotContent = copilotContent.replace(
+                        '# Cursor Rules',
+                        '# GitHub Copilot Instructions'
+                    );
+                    await fs.writeFile(path.join(githubDir, 'copilot-instructions.md'), copilotContent);
+                }
 
-                // Adjust header for Copilot
-                copilotContent = copilotContent.replace(
-                    '# Cursor Rules',
-                    '# GitHub Copilot Instructions'
-                );
+                // Generate role-specific .instructions.md files (Copilot feature)
+                const roles = ['architect', 'tech-lead', 'developer', 'reviewer', 'documenter', 'debugger'];
+                for (const role of roles) {
+                    const promptContent = await fs.readFile(
+                        path.join(promptsDir, `${role}.md`),
+                        'utf8'
+                    );
 
-                await fs.writeFile(path.join(githubDir, 'copilot-instructions.md'), copilotContent);
+                    // Copilot uses simple .instructions.md files without YAML frontmatter
+                    const roleInstructions = `# ${role.charAt(0).toUpperCase() + role.slice(1)} Role - EnokMethod
+
+You are acting as the **${role}** in the EnokMethod workflow.
+
+## Context Files (Always Read First)
+- \`.enokMethod/CONTEXT.md\` - Project tech stack and conventions
+- \`.enokMethod/MEMORY.md\` - Recent activity and history
+- \`CURRENT_SPEC.md\` - Active specification (if exists)
+
+## Your Responsibilities
+
+${promptContent}
+
+## CLI Commands Available
+- \`enokmethod spec "title"\` - Create new specification
+- \`enokmethod done "name"\` - Archive completed spec
+- \`enokmethod status\` - Show project status
+- \`enokmethod commit\` - Generate commit message
+`;
+                    await fs.writeFile(
+                        path.join(githubDir, `${role}.instructions.md`),
+                        roleInstructions
+                    );
+                }
+
                 console.log(
                     chalk.green(
-                        '✔ Installed GitHub Copilot config (.github/copilot-instructions.md)'
+                        '✔ Installed GitHub Copilot config (.github/copilot-instructions.md + 6 role files)'
                     )
                 );
             }
@@ -196,20 +381,214 @@ Run the following command to finish the spec:
 
             // 6. Adapter: Windsurf
             if (options.adapter === 'windsurf') {
+                const windsurfDir = path.join(targetDir, '.windsurf');
+                await fs.ensureDir(path.join(windsurfDir, 'rules'));
+
+                // Copy base rules
                 await fs.copy(
                     path.join(templatesDir, 'windsurfrules'),
                     path.join(targetDir, '.windsurfrules')
                 );
-                console.log(chalk.green('✔ Installed Windsurf config (.windsurfrules)'));
+
+                // Generate role-specific rules for Windsurf
+                const roles = ['architect', 'tech-lead', 'developer', 'reviewer', 'documenter', 'debugger'];
+                for (const role of roles) {
+                    const promptContent = await fs.readFile(
+                        path.join(promptsDir, `${role}.md`),
+                        'utf8'
+                    );
+                    
+                    // Create Windsurf-specific rule file
+                    const windsurfRule = `# Windsurf Rules - ${role.charAt(0).toUpperCase() + role.slice(1)} Role
+
+You are an expert AI developer acting as the **${role}** in the EnokMethod workflow.
+
+## Core Context (ALWAYS READ FIRST)
+
+1. **.enokMethod/CONTEXT.md** - Project tech stack, architecture, and conventions
+2. **.enokMethod/MEMORY.md** - Recent activity and project history
+3. **CURRENT_SPEC.md** - Active specification (if exists)
+
+## Your Role
+
+${promptContent}
+
+## EnokMethod Commands
+
+You can use these terminal commands:
+- \`enokmethod spec "Title"\` - Create new specification
+- \`enokmethod done "Name"\` - Archive current spec
+- \`enokmethod status\` - Show project status
+- \`enokmethod validate\` - Validate project structure
+- \`enokmethod context\` - View CONTEXT.md
+- \`enokmethod memory\` - View MEMORY.md
+- \`enokmethod list\` - List archived specs
+- \`enokmethod commit\` - Generate commit message
+
+## Rules of Engagement
+
+1. **Context First**: Always check MEMORY.md to see what has been done recently
+2. **Atomic Changes**: Do not refactor unrelated code
+3. **No Hallucinations**: If a library is not in Tech Stack, ASK before installing it
+4. **Clean Up**: Remove unused imports and files immediately
+5. **Follow CURRENT_SPEC.md**: If it exists, implement ONLY what's specified
+`;
+                    await fs.writeFile(
+                        path.join(windsurfDir, 'rules', `${role}.md`),
+                        windsurfRule
+                    );
+                }
+
+                // Create a README for Windsurf usage
+                const windsurfReadme = `# Windsurf + EnokMethod
+
+## Usage
+
+The base rules are in \`.windsurfrules\`. For role-specific rules, you can reference:
+
+\`\`\`
+.windsurf/rules/architect.md
+.windsurf/rules/tech-lead.md
+.windsurf/rules/developer.md
+.windsurf/rules/reviewer.md
+.windsurf/rules/documenter.md
+.windsurf/rules/debugger.md
+\`\`\`
+
+## Workflow
+
+1. **Start**: Tell Windsurf "New spec: [Your idea]"
+2. **Plan**: Say "Plan this spec" (uses architect/tech-lead rules)
+3. **Code**: Say "Implement" (uses developer rules)
+4. **Review**: Say "Review the code" (uses reviewer rules)
+5. **Done**: Say "Finish spec"
+
+## Available Roles
+
+- **architect**: System design and architecture decisions
+- **tech-lead**: Technical planning and implementation strategy
+- **developer**: Code implementation
+- **reviewer**: Code review and quality assurance
+- **documenter**: Documentation generation
+- **debugger**: Bug fixing and troubleshooting
+`;
+                await fs.writeFile(path.join(windsurfDir, 'README.md'), windsurfReadme);
+
+                console.log(chalk.green('✔ Installed Windsurf config (.windsurfrules + 6 role rules)'));
             }
 
             // 7. Adapter: Aider
             if (options.adapter === 'aider') {
+                const aiderDir = path.join(targetDir, '.aider');
+                await fs.ensureDir(path.join(aiderDir, 'prompts'));
+
+                // Copy base config
                 await fs.copy(
                     path.join(templatesDir, 'aider.conf.yml'),
                     path.join(targetDir, '.aider.conf.yml')
                 );
-                console.log(chalk.green('✔ Installed Aider config (.aider.conf.yml)'));
+
+                // Generate role-specific prompt files for Aider
+                // Aider uses system prompts, not agents
+                const roles = ['architect', 'tech-lead', 'developer', 'reviewer', 'documenter', 'debugger'];
+                for (const role of roles) {
+                    const promptContent = await fs.readFile(
+                        path.join(promptsDir, `${role}.md`),
+                        'utf8'
+                    );
+                    
+                    // Wrap in Aider-specific format
+                    const aiderPrompt = `# EnokMethod ${role.charAt(0).toUpperCase() + role.slice(1)} Role
+
+You are acting as the **${role}** in the EnokMethod workflow.
+
+## Context Files
+Always read these files before starting:
+- .enokMethod/CONTEXT.md (project tech stack and conventions)
+- .enokMethod/MEMORY.md (recent activity and history)
+- CURRENT_SPEC.md (active specification, if exists)
+
+## Your Role
+
+${promptContent}
+
+## Workflow
+1. Read the context files listed above
+2. Follow the instructions in your role description
+3. Make changes according to CURRENT_SPEC.md if it exists
+4. Use conventional commits when done
+`;
+                    await fs.writeFile(
+                        path.join(aiderDir, 'prompts', `${role}.md`),
+                        aiderPrompt
+                    );
+                }
+
+                // Copy CONVENTIONS.md - Aider's standard format for project context
+                const conventionsPath = path.join(templatesDir, 'aider', 'CONVENTIONS.md');
+                if (await fs.pathExists(conventionsPath)) {
+                    await fs.copy(conventionsPath, path.join(targetDir, 'CONVENTIONS.md'));
+                } else {
+                    // Generate CONVENTIONS.md if template doesn't exist
+                    const conventionsContent = `# EnokMethod Conventions
+
+## Context Files
+
+Before making any changes, always read:
+- \`.enokMethod/CONTEXT.md\` - Tech stack and architecture
+- \`.enokMethod/MEMORY.md\` - Recent activity and history
+- \`CURRENT_SPEC.md\` - Active specification (if exists)
+
+## Methodology
+
+You are following the **EnokMethod** - Context-First Spec-Driven Development.
+
+## CLI Commands
+
+\`\`\`bash
+enokmethod spec "title"     # Create new specification
+enokmethod done "name"      # Archive completed spec
+enokmethod status           # Show project status
+enokmethod commit           # Generate commit message
+\`\`\`
+`;
+                    await fs.writeFile(path.join(targetDir, 'CONVENTIONS.md'), conventionsContent);
+                }
+
+                // Create a README for Aider usage
+                const aiderReadme = `# Aider + EnokMethod
+
+## Quick Start
+
+\`\`\`bash
+# Load conventions automatically (recommended)
+aider --read CONVENTIONS.md
+
+# Or use a specific role
+aider --message-file .aider/prompts/developer.md
+\`\`\`
+
+## Available Roles
+
+- **architect.md**: System design and architecture decisions
+- **tech-lead.md**: Technical planning and implementation strategy
+- **developer.md**: Code implementation
+- **reviewer.md**: Code review and quality assurance
+- **documenter.md**: Documentation generation
+- **debugger.md**: Bug fixing and troubleshooting
+
+## EnokMethod Commands
+
+\`\`\`bash
+enokmethod spec "title"   # Create new specification
+enokmethod done "name"    # Archive completed spec
+enokmethod status         # Show project status
+enokmethod validate       # Validate project structure
+\`\`\`
+`;
+                await fs.writeFile(path.join(aiderDir, 'README.md'), aiderReadme);
+
+                console.log(chalk.green('✔ Installed Aider config (.aider.conf.yml + CONVENTIONS.md + 6 role prompts)'));
             }
 
             console.log(chalk.green('✔ EnokMethod successfully initialized!'));

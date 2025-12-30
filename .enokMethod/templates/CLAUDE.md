@@ -1,12 +1,23 @@
-# Project Context & Rules
+# EnokMethod System - Claude
 
-This project follows the **EnokMethod**.
+You are operating under the **EnokMethod**.
 
-## Core Rules
-1. **Context First**: Read `.enokMethod/CONTEXT.md` before answering technical questions.
-2. **Dynamic Memory**: Check `.enokMethod/MEMORY.md` for current status.
-3. **Active Spec**: If `.enokMethod/CURRENT_SPEC.md` exists, focus on that task.
+## 🧠 SYSTEM CORE
 
-## Commands
-- `enokmethod spec "Title"`: Start a new feature.
-- `enokmethod done "Title"`: Finish a feature.
+Your behavior is governed by the **Orchestrator Protocol**.
+**IMMEDIATELY READ and APPLY**:
+👉 `.enokMethod/prompts/orchestrator.md`
+
+This file contains your Core Loop, State Management rules, and Workflow triggers. You MUST follow it for every interaction.
+
+## 🛠 FILES TO WATCH
+
+- `.enokMethod/CONTEXT.md` (Tech Stack)
+- `.enokMethod/MEMORY.md` (History)
+- `CURRENT_SPEC.md` (Active Plan)
+
+## ⚡️ QUICK ACTIONS
+
+- New Spec: `enokmethod spec "Title"`
+- Finish: `enokmethod done "Title"`
+- Status: `enokmethod status`

@@ -1,191 +1,203 @@
-# EnokMethod - Context-First Spec-Driven Development - CFSD
+# EnokMethod - The OS for AI Coding Agents
 
 [![npm version](https://img.shields.io/npm/v/enokmethod.svg)](https://www.npmjs.com/package/enokmethod)
 [![Tests](https://github.com/tky0065/enokMethode/workflows/Tests/badge.svg)](https://github.com/tky0065/enokMethode/actions/workflows/test.yml)
-[![CodeQL](https://github.com/tky0065/enokMethode/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/tky0065/enokMethode/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
 
-> **Context-First Spec-Driven Development for the AI Era.**
+> **Context-First Spec-Driven Development (CFSD)**
+> Stop managing prompts. Start managing context.
 
-EnokMethod is a minimalist, high-efficiency software development methodology designed for the age of LLMs. It optimizes "Context Energy"—ensuring AI agents (and humans) have exactly the right information at the right time, preventing hallucinations and reducing token costs.
+EnokMethod is not just a CLI tool; it is an **Operating System for AI Agents**. It injects a structured "Brain" (The Orchestrator) into tools like Claude, Cursor, and Windsurf, enabling them to work autonomously while strictly following your architectural rules.
 
-**Philosophy**: The CLI (`enokmethod`) acts as the "Hands" of the AI. Agents are instructed to drive the CLI to manage project state, while you provide the intelligence and validation.
+---
+
+## 🧠 The Core Concept
+
+Traditional AI coding is chaotic: you prompt, it hallucinates, you fix.
+**EnokMethod** inverts this. It uses **Context Energy Management** to ensure the AI only acts when it understands the full picture.
+
+### The Enok Flow
+
+```mermaid
+graph TD
+    User([User Request]) --> Orchestrator{⚡️ Orchestrator Protocol}
+    
+    Orchestrator -- "No Spec Exists" --> Architect[👷 Architect Agent]
+    Orchestrator -- "Spec is Active" --> Developer[👨‍💻 Developer Agent]
+    Orchestrator -- "Task Finished" --> Reviewer[🕵️ Reviewer Agent]
+    
+    Architect --> |Creates| Spec[📝 CURRENT_SPEC.md]
+    Spec --> |Guides| Developer
+    Developer --> |Writes| Code[💾 Source Code]
+    Code --> |Validates| Reviewer
+    Reviewer --> |Archives| Memory[🧠 MEMORY.md]
+    
+    subgraph "Enok Core"
+    Context[CONTEXT.md] -.-> Architect
+    Context -.-> Developer
+    Context -.-> Reviewer
+    end
+```
+
+---
+
+## 🤖 The Orchestrator Engine
+
+At the heart of EnokMethod is the **Orchestrator Protocol**. Whether you use Claude, Windsurf, or Aider, this logic loop is injected into the AI's system prompt.
+
+### The Autonomous Decision Loop
+
+The AI automatically detects the project state and switches roles without you asking.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Analysis : User Request
+    
+    state Analysis {
+        [*] --> CheckState
+        CheckState --> InnovationMode : No CURRENT_SPEC.md
+        CheckState --> ExecutionMode : CURRENT_SPEC.md found
+        CheckState --> CompletionMode : Implementation done
+    }
+    
+    state InnovationMode {
+        Architect --> DefineSpecs
+        DefineSpecs --> Plan
+    }
+    
+    state ExecutionMode {
+        Developer --> ReadSpec
+        ReadSpec --> WriteCode
+        WriteCode --> Test
+    }
+    
+    state CompletionMode {
+        Reviewer --> Validate
+        Validate --> Commit
+        Commit --> Archive
+    }
+    
+    InnovationMode --> Idle : "Plan Ready"
+    ExecutionMode --> Idle : "Step Done"
+    CompletionMode --> [*] : "Task Closed"
+```
+
+---
 
 ## ✨ Key Features
 
-- 🎯 **Simple & Powerful**: 3 core files (CONTEXT, MEMORY, SPEC) vs 21+ agents
-- 🤖 **AI-Native**: 7 adapters (Cursor, Claude, Gemini, Copilot, Windsurf, Aider, General)
-- 🔍 **Auto-Detection**: Automatically detects your tech stack (JS/TS, Python, Go, Java)
-- 📦 **9 CLI Commands**: From `init` to `commit`, everything you need
-- 🧠 **6 Agent Prompts**: Architect, Tech-Lead, Developer, Reviewer, Documenter, Debugger
-- ✅ **Fully Tested**: 49 tests, 99% coverage, CI/CD with GitHub Actions
-- 🚀 **Fast**: Minimal overhead, maximum efficiency
-- 🌍 **Language-Agnostic**: Works with any programming language
+- **🚀 Autonomous Workflow Engine**: The AI refuses to code without a plan (Spec) and manages its own lifecycle.
+- **🧠 7 Specialized Agents**:
+  - **Orchestrator**: The central brain dispatcher.
+  - **Architect**: Designs systems and writes specs.
+  - **Tech-Lead**: strategies implementation.
+  - **Developer**: implementing code strictly.
+  - **Reviewer**: Quality assurance.
+  - **Documenter**: Maintains README/Docs.
+  - **Debugger**: Systematic issue resolution.
+- **🔌 Multi-Adapter Support**: Native configuration generation for:
+  - **Claude Code** (Best for CLI autonomy)
+  - **Cursor** & **Windsurf** (Best for IDE flow)
+  - **GitHub Copilot**
+  - **Aider**
+- **📦 9 CLI Commands**: `init`, `spec`, `done`, `status`, `list`, `context`, `memory`, `validate`, `commit`.
 
 ---
 
 ## 📦 Installation
 
-Install directly from source using this one-liner:
+Install directly from source (Recommended):
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/tky0065/enokMethode/main/scripts/install.sh | bash
 ```
 
-_Prerequisites: Node.js (v18+) and Git must be installed._
+_Requirements: Git and Node.js (v18+) must be installed._
+
+Or run directly via npx (Transient):
+
+```bash
+npx enokmethod init
+```
 
 ---
 
-## 🛠 Quick Start Guides
+## 🚀 Quick Start Guide
 
-### 🤖 Workflow for Claude Code (CLI)
-
-Claude Code is natively supported via custom Slash Commands.
-
-**1. Initialize**
+### 1. Initialize & Choose Adapter
 
 ```bash
+cd my-project
 enokmethod init --adapter claude
+# Options: claude, cursor, windsurf, aider, copilot, general
 ```
 
-**2. The Loop**
+### 2. The "Real World" Workflow
 
-- **Start**: Type `/spec "Add a dark mode toggle"` in the prompt.
-- **Refine**: Type `/agent architect "Refine the requirements"`.
-- **Code**: Type `/agent developer "Implement the plan"`.
-- **Finish**: Type `/done "Dark Mode"`.
+**Step A: The Idea (Architect Mode)**
+You don't need to write the spec. Just ask.
+> *User*: "I want to add a dark mode toggle to the navbar."
+>
+> *AI (Orchestrator)*: "I see no active spec. Switching to **Architect**. Creating spec 'Dark Mode'..."
+> *(AI runs `enokmethod spec` and writes the plan)*
+
+**Step B: The Execution (Developer Mode)**
+> *User*: "Looks good, go ahead."
+>
+> *AI (Orchestrator)*: "Spec found. Switching to **Developer**. Implementing Step 1: Tailwind config..."
+> *(AI writes code, runs tests, checks off items)*
+
+**Step C: The Close (Reviewer Mode)**
+> *User*: "It works."
+>
+> *AI (Orchestrator)*: "Great. Switching to **Reviewer**. Validating structure..."
+> *(AI runs `enokmethod done`)*
 
 ---
 
-### 🖱️ Workflow for Cursor (IDE)
+## 🔧 Technology Stack
 
-Cursor integration is seamless via `.cursorrules`. The Agent knows how to use the terminal.
+EnokMethod is stack-agnostic but "Context-Aware". It auto-detects your stack during `init`.
 
-**1. Initialize**
-
-```bash
-enokmethod init
-```
-
-**2. The Loop (Chat)**
-
-- **Start**: Open Composer (Cmd+I) or Chat (Cmd+L) and say: **"New spec: Add dark mode"**.
-    - _The Agent will run `enokmethod spec ...` for you._
-- **Plan**: Say: **"Plan this spec"**.
-    - _The Agent will read the files and fill the plan._
-- **Code**: Say: **"Implement"**.
-    - _The Agent will execute the plan._
-- **Finish**: Say: **"Done"**.
-    - _The Agent will run `enokmethod done ...` to archive it._
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| **CONTEXT.md** | Static Rules (Stack, style, patterns) | `.enokMethod/CONTEXT.md` |
+| **MEMORY.md** | Dynamic History (What happened recently) | `.enokMethod/MEMORY.md` |
+| **CURRENT_SPEC.md** | The Active Task (Ephemeral) | `./CURRENT_SPEC.md` |
+| **ARCHIVE** | Past Specs (Searchable knowledge) | `.enokMethod/archive/` |
 
 ---
 
-### 🧠 Workflow for Gemini / Generic LLMs
+## 🔌 Adapter Specifics
 
-For tools like Google AI Studio, ChatGPT, or standard IDEs.
+EnokMethod generates optimized configuration for your specific AI tool:
 
-**1. Initialize**
+### 🟣 Claude Code (`--adapter claude`)
+Generates a full `.claude/` folder with **Agents** and **Slash Commands**.
+- Use `/agents` to see available specialized roles.
+- Use slash commands like `/spec "Title"` directly in chat.
 
-```bash
-enokmethod init --adapter gemini
-# OR
-enokmethod init --adapter general
-```
+### 🔵 Cursor (`--adapter cursor`)
+Generates `.cursor/rules/*.mdc` files using the new Rulepads feature.
+- **Smart Globs**: Rules apply only when relevant files are touched.
+- **Always Active**: The Orchestrator is always watching.
 
-_Creates `GEMINI.md` or `AGENT.md` at the project root._
+### 🌊 Windsurf (`--adapter windsurf`)
+Generates `.windsurfrules` and Cascade flow profiles.
+- Optimized for the "Cascade" chat flow.
 
-**2. Setup**
-Upload `GEMINI.md` (or `AGENT.md`) + `CONTEXT.md` + `MEMORY.md` to your LLM session.
-
-**3. Execution**
-
-- **If the LLM has terminal access**: Tell it "Run the enokmethod spec command for 'Feature X'".
-- **If not**: You run the commands manually in your terminal, and the LLM reads the generated files.
-
----
-
-## � CLI Commands
-
-EnokMethod provides 9 powerful commands:
-
-### Core Commands
-
-```bash
-enokmethod init [--adapter <type>]  # Initialize project (7 adapters available)
-enokmethod spec <title>             # Create a new specification
-enokmethod done <name>              # Archive completed spec
-```
-
-### Utility Commands
-
-```bash
-enokmethod status                   # Show project status and active spec
-enokmethod list [--limit <n>]       # List archived specs (with search)
-enokmethod context                  # Display CONTEXT.md
-enokmethod memory                   # Display MEMORY.md
-enokmethod validate                 # Validate project structure
-```
-
-### Git Integration
-
-C```bash
-enokmethod commit [-m <msg>]        # Generate conventional commit message
-```
-
-**Adapters**: `cursor`, `claude`, `gemini`, `copilot`, `general`, `windsurf`, `aider`
+### 🤖 Aider (`--adapter aider`)
+Generates `CONVENTIONS.md` and setups `--read` flags automatically.
+- Integrates deeply with git workflows.
 
 ---
-
-## �📂 Structure
-
-```text
-.
-├── .enokMethod/
-│   ├── CONTEXT.md       # The Constitution (Stack, Rules)
-│   ├── MEMORY.md        # The Dynamic State (History, Active Tasks)
-│   ├── archive/         # Completed Specs history
-│   ├── prompts/         # System Prompts for Agents (Architect, Dev...)
-│   └── templates/       # Source templates
-├── .claude/             # (Optional) Claude Code configuration
-├── CURRENT_SPEC.md      # The SINGLE active task (Ephemeral)
-└── .cursorrules         # (Optional) Cursor AI rules
-```
 
 ## 🤝 Contributing
 
-We welcome contributions! EnokMethod is built on simplicity and efficiency.
-
-### Quick Start for Contributors
-
-```bash
-# Clone the repo
-git clone https://github.com/tky0065/enokMethode.git
-cd enokMethode
-
-# Install dependencies
-npm install
-
-# Run tests
-npm test
-
-# Format code
-npm run format
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+We love contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 ## 📄 License
 
-MIT © EnokMethod Contributors
-
-## 🔗 Links
-
-- [PRD (Product Requirements)](PRD.md)
-- [Improvement Plan](AMELIORATION_PLAN.md)
-- [Changelog](CHANGELOG.md)
-- [Issues](https://github.com/tky0065/enokMethode/issues)
-
----
-
-**Made with ❤️ for the AI-Native Development Era**
+MIT © [Yacouba Kone](https://github.com/tky0065)

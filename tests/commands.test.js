@@ -223,4 +223,76 @@ describe('New CLI Commands', () => {
             expect(output).toContain('⚠ ## 2. Tech Stack');
         });
     });
+
+    describe('commit command', () => {
+        it('should propose a commit message based on active spec', () => {
+            runCLI('spec "Implement login feature"');
+            const output = runCLI('commit');
+
+            expect(output).toContain('Proposed Commit Message');
+            expect(output).toContain('feat: Implement login feature');
+            expect(output).toContain('git commit -m "feat: Implement login feature"');
+        });
+
+        it('should correctly detect fix type', () => {
+            runCLI('spec "Fix login bug"');
+            const output = runCLI('commit');
+
+            expect(output).toContain('fix: Fix login bug');
+        });
+
+        it('should correctly detect docs type', () => {
+            runCLI('spec "Update documentation"');
+            const output = runCLI('commit');
+
+            expect(output).toContain('docs: Update documentation');
+        });
+
+        it('should correctly detect refactor type', () => {
+            runCLI('spec "Refactor auth module"');
+            const output = runCLI('commit');
+
+            expect(output).toContain('refactor: Refactor auth module');
+        });
+
+        it('should use custom message when provided', () => {
+            const output = runCLI('commit -m "chore: initial commit"');
+
+            expect(output).toContain('Proposed Commit Message');
+            expect(output).toContain('chore: initial commit');
+            expect(output).toContain('git commit -m "chore: initial commit"');
+        });
+
+        it('should include completed requirements in body', async () => {
+            runCLI('spec "Complex detailed feature"');
+            
+            // Manually modify SPEC to mark some items as done
+            const specPath = path.join(TEST_DIR, 'CURRENT_SPEC.md');
+            let content = await fs.readFile(specPath, 'utf8');
+            content = content + '\n- [x] Create API endpoint\n- [x] Create frontend component\n- [ ] Write tests';
+            await fs.writeFile(specPath, content);
+
+            const output = runCLI('commit');
+
+            expect(output).toContain('feat: Complex detailed feature');
+            expect(output).toContain('Create API endpoint');
+            expect(output).toContain('Create frontend component');
+            // Check that uncompleted items are NOT included (simple check)
+            // Note: The implementation regex /^- \[x\] (.+)$/gm matches lines starting with "- [x] "
+        });
+
+        it('should warn when no spec and no message', () => {
+            const output = runCLI('commit');
+
+            expect(output).toContain('No CURRENT_SPEC.md found');
+            expect(output).toContain('Usage: enokmethod commit -m');
+        });
+
+        it('should support --no-verify flag', () => {
+            runCLI('spec "Skip hooks feature"');
+            const output = runCLI('commit --no-verify');
+
+            expect(output).toContain('--no-verify');
+        });
+    });
 });
