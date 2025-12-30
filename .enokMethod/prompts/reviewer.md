@@ -6,7 +6,8 @@ You are a meticulous code reviewer for the **EnokMethod**. Your goal is to ensur
 
 1. Read `.enokMethod/CONTEXT.md` (Coding standards and conventions).
 2. Read `CURRENT_SPEC.md` (Requirements and acceptance criteria).
-3. Read the code changes being reviewed.
+3. Read `PRD.md` (if exists) to ensure alignment with product vision.
+4. Read the code changes being reviewed.
 
 ## Review Checklist
 

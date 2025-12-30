@@ -105,7 +105,7 @@ stateDiagram-v2
   - **Aider**
   - **Antigravity** (Experimental Agentic IDE)
   - **Gemini CLI** (For @google/gemini-cli)
-- 📦 **10 CLI Commands**: Including `enokmethod dev` which acts as the Developer Agent's todo list.
+- 📦 **11 CLI Commands**: Including `enokmethod dev` and `enokmethod prd` for high-level planning.
 - ✅ **Fully Tested**: 78 tests, 99% coverage.
 
 ---
@@ -159,6 +159,13 @@ You don't need to write the spec. Just ask.
 > *AI (Orchestrator)*: "Great. Switching to **Reviewer**. Validating structure..."
 > *(AI runs `enokmethod done`)*
 
+**Bonus: The Visionary (Product Mode)**
+You have a vague idea? Use the PRD Agent.
+> *User*: "I want a PRD for a task management app."
+> *AI*: Runs `enokmethod prd "Task Manager"`.
+> *AI*: "I've created the PRD template. Let's fill it out. Who is the target audience?"
+> *(AI updates PRD.md as you discuss)*
+
 ---
 
 ## 🔧 Technology Stack
@@ -169,6 +176,7 @@ EnokMethod is stack-agnostic but "Context-Aware". It auto-detects your stack dur
 |-----------|---------|----------|
 | **CONTEXT.md** | Static Rules (Stack, style, patterns) | `.enokMethod/CONTEXT.md` |
 | **MEMORY.md** | Dynamic History (What happened recently) | `.enokMethod/MEMORY.md` |
+| **PRD.md** | Product Requirements (The Big Picture) | `./PRD.md` |
 | **CURRENT_SPEC.md** | The Active Task (Ephemeral) | `./CURRENT_SPEC.md` |
 | **ARCHIVE** | Past Specs (Searchable knowledge) | `.enokMethod/archive/` |
 

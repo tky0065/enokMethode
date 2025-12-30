@@ -159,6 +159,7 @@ You are an expert AI developer following the **EnokMethod** methodology.
 Before answering any technical question, verify you have read:
 - \`.enokMethod/CONTEXT.md\` - Project tech stack and conventions
 - \`.enokMethod/MEMORY.md\` - Current project state and history
+- \`PRD.md\` - Product Requirements Document (if exists)
 
 If \`CURRENT_SPEC.md\` exists, your ONLY goal is to implement it.
 
@@ -232,6 +233,20 @@ Run the following command to finish the spec:
 \`enokmethod done "$1"\`
 
 This will archive CURRENT_SPEC.md and update MEMORY.md.`
+                    },
+                    prd: {
+                        description: 'Create a Product Requirements Document (PRD)',
+                        content: `# Enok PRD
+Run the following command to start a PRD:
+\`enokmethod prd "$1"\`
+
+If no title is provided, the CLI will initialize a blank PRD.
+Your Role as Agent:
+1. If the user invokes this without a title or asks for help, INTERVIEW them to gather requirements.
+2. Ask about: User Goals, Key Features, Success Criteria.
+3. Propose ideas if the user is stuck.
+4. Once you have enough info, update \`PRD.md\` with the details.
+5. Finally, update \`MEMORY.md\` and \`README.md\` to reflect the new project scope.`
                     },
                     status: {
                         description: 'Show project status and active spec',
@@ -423,7 +438,8 @@ You are an expert AI developer acting as the **${role}** in the EnokMethod workf
 
 1. **.enokMethod/CONTEXT.md** - Project tech stack, architecture, and conventions
 2. **.enokMethod/MEMORY.md** - Recent activity and project history
-3. **CURRENT_SPEC.md** - Active specification (if exists)
+3. **PRD.md** - Product Requirements (if exists)
+4. **CURRENT_SPEC.md** - Active specification (if exists)
 
 ## Your Role
 
@@ -625,7 +641,8 @@ You are working in a project that follows the **EnokMethod**.
 ## Core Context
 1. **Always** check \`.enokMethod/CONTEXT.md\` for tech stack details.
 2. **Always** check \`.enokMethod/MEMORY.md\` for project status.
-3. **Focus** on \`CURRENT_SPEC.md\` if it exists.
+3. **Check** \`PRD.md\` for product goals (if exists).
+4. **Focus** on \`CURRENT_SPEC.md\` if it exists.
 
 ## Commands
 Use the provided workflows to interact with the project:
@@ -644,6 +661,16 @@ Use the provided workflows to interact with the project:
 2. Run the spec command with the title.
 // turbo
 enokmethod spec "Title of the task"
+`
+                    },
+                    prd: {
+                        desc: 'Create or update PRD (EnokMethod)',
+                        steps: `1. Run prd command to init file.
+// turbo
+enokmethod prd
+2. Read PRD.md
+3. Interview user to fill sections.
+4. Update PRD.md
 `
                     },
                     done: {
@@ -692,6 +719,7 @@ You are a Gemini agent working on a project using **EnokMethod**.
 ## Project Structure
 - \`.enokMethod/CONTEXT.md\`: Technical constraints and stack.
 - \`.enokMethod/MEMORY.md\`: Project history and current status.
+- \`PRD.md\`: Product Requirements (if exists).
 - \`CURRENT_SPEC.md\`: The active task you should focus on.
 
 ## Operational Rules
@@ -719,6 +747,60 @@ Act as a senior developer. Autonomously move the project forward by checking the
             }
         } catch (err) {
             console.error(chalk.red('Initialization failed:'), err);
+        }
+    });
+
+
+
+// COMMAND: PRD
+program
+    .command('prd [title]')
+    .description('Create a Product Requirements Document (PRD)')
+    .action(async (title) => {
+        const targetDir = process.cwd();
+        const prdPath = path.join(targetDir, 'PRD.md');
+        const templatePath = path.join(__dirname, '../.enokMethod/templates/PRD.md');
+        const memoryPath = path.join(targetDir, '.enokMethod/MEMORY.md');
+
+        try {
+            if (await fs.pathExists(prdPath)) {
+                console.log(chalk.yellow('Warning: PRD.md already exists.'));
+                // Unlike spec, we might not want to refuse overwrite immediately if it's just an update, 
+                // but for now let's just warn and maybe let the user manually edit.
+                // Or if logic requires, we could read it.
+                // But the request implies creation.
+                console.log(chalk.gray('Edit the existing file or remove it to start fresh.'));
+                return;
+            }
+
+            // Create from template
+            if (await fs.pathExists(templatePath)) {
+                let content = await fs.readFile(templatePath, 'utf8');
+                if (title) {
+                    content = content.replace('[Project Name]', title);
+                    content = content.replace('[One sentence summary of what we are building]', title); // Fallback
+                } else {
+                    content = content.replace('[Project Name]', 'Untitled Project');
+                }
+                
+                await fs.writeFile(prdPath, content);
+                console.log(chalk.green(`✔ Created PRD: PRD.md`));
+            } else {
+                // Fallback if template missing
+                await fs.writeFile(prdPath, `# PRD\n\n## Goal\n${title || 'Define your project'}`);
+                console.log(chalk.green(`✔ Created PRD: PRD.md (basic)`));
+            }
+
+            // Update Memory
+            if (await fs.pathExists(memoryPath)) {
+                const nowDisplay = new Date().toISOString().replace('T', ' ').slice(0, 16);
+                const memoryAppend = `\n- [${nowDisplay}] Started PRD: ${title || 'New Project'}\n`;
+                await fs.appendFile(memoryPath, memoryAppend);
+                console.log(chalk.green(`✔ Updated .enokMethod/MEMORY.md`));
+            }
+
+        } catch (err) {
+            console.error(chalk.red('Failed to create PRD:'), err);
         }
     });
 

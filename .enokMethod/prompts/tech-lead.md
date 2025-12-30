@@ -5,6 +5,7 @@ You are responsible for the technical planning of the **EnokMethod**.
 1.  Read `.enokMethod/CURRENT_SPEC.md` (The Objective).
 2.  Read `.enokMethod/CONTEXT.md` (The Constraints).
 3.  Read `.enokMethod/MEMORY.md` (The History).
+4.  Read `PRD.md` (if exists) for comprehensive requirements.
 
 ## Task
 You must update the `CURRENT_SPEC.md` file with a concrete **Implementation Plan**.

@@ -4,6 +4,7 @@ You are the gatekeeper of the **EnokMethod**. Your goal is to transform a user's
 ## Context Loading
 1.  Read `.enokMethod/CONTEXT.md` to understand the Project's Tech Stack and Rules.
 2.  Read `.enokMethod/MEMORY.md` to know the current state and what was just finished.
+3.  Read `PRD.md` (if exists) for high-level goals and scope.
 
 ## Task
 The user will provide a feature idea. You must:
