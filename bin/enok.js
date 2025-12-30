@@ -814,7 +814,37 @@ program
                 return;
             }
 
-            const content = await fs.readFile(contextPath, 'utf8');
+            // AUTO-UPDATE LOGIC
+            console.log(chalk.gray('ℹ Scanning project for tech stack updates...'));
+            const stack = await detectTechStack(targetDir);
+            let content = await fs.readFile(contextPath, 'utf8');
+            let updated = false;
+
+            const updateSection = (name, value) => {
+                const regex = new RegExp(`${name}\\*\\*:.*$`, 'gm');
+                // Only update if value exists and is different (ignoring case/spaces might be safer but strict check ok)
+                if (value && !content.includes(`${name}**: ${value}`)) {
+                     if (content.match(regex)) {
+                         content = content.replace(regex, `${name}**: ${value}`);
+                         updated = true;
+                     }
+                }
+            };
+            
+            updateSection('Language', stack.language);
+            updateSection('Framework', stack.framework);
+            updateSection('Styling', stack.styling);
+            updateSection('Database', stack.database);
+            updateSection('State Mgmt', stack.state);
+            updateSection('Testing', stack.testing);
+
+            if (updated) {
+                await fs.writeFile(contextPath, content);
+                console.log(chalk.green('✔ CONTEXT.md auto-updated with fresh tech stack scan.'));
+            } else {
+                console.log(chalk.gray('✔ CONTEXT.md Tech Stack is up to date.'));
+            }
+
             console.log(chalk.blue.bold('\n📋 Project Context\n'));
             console.log(content);
         } catch (err) {
@@ -829,6 +859,7 @@ program
     .action(async () => {
         const targetDir = process.cwd();
         const memoryPath = path.join(targetDir, '.enokMethod/MEMORY.md');
+        const specPath = path.join(targetDir, 'CURRENT_SPEC.md');
 
         try {
             if (!(await fs.pathExists(memoryPath))) {
@@ -836,11 +867,50 @@ program
                 return;
             }
 
-            const content = await fs.readFile(memoryPath, 'utf8');
+            // READ STATE
+            let content = await fs.readFile(memoryPath, 'utf8');
+            const hasSpec = await fs.pathExists(specPath);
+            let updated = false;
+
+            // SYNC ACTIVE SPEC
+            if (hasSpec) {
+                const specContent = await fs.readFile(specPath, 'utf8');
+                const titleMatch = specContent.match(/\*\*Goal\*\*:\s*(.+)/);
+                const title = titleMatch ? titleMatch[1].trim() : 'Unknown Spec';
+                
+                // If MEMORY says None or different, update it
+                const activeSpecRegex = /Active Spec:\s*(.*)/;
+                const match = content.match(activeSpecRegex);
+                
+                if (match) {
+                    const currentMemorySpec = match[1].trim();
+                    // Basic check to see if we need to update
+                    if (currentMemorySpec !== title && !currentMemorySpec.includes(title)) {
+                        content = content.replace(activeSpecRegex, `Active Spec: ${title}`);
+                        updated = true;
+                    }
+                }
+            } else {
+                // No spec file -> Active Spec should be "None"
+                const activeSpecRegex = /Active Spec:\s*(.*)/;
+                const match = content.match(activeSpecRegex);
+                 if (match && match[1].trim() !== 'None') {
+                    content = content.replace(activeSpecRegex, `Active Spec: None`);
+                    updated = true;
+                }
+            }
+
+            if (updated) {
+                await fs.writeFile(memoryPath, content);
+                console.log(chalk.green('✔ MEMORY.md synced with project state.'));
+            } else {
+                console.log(chalk.gray('✔ MEMORY.md is in sync.'));
+            }
+
             console.log(chalk.blue.bold('\n🧠 Project Memory\n'));
             console.log(content);
         } catch (err) {
-            console.error(chalk.red('Failed to read memory:'), err);
+            console.error(chalk.red('Failed to read/update memory:'), err);
         }
     });
 

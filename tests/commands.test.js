@@ -333,4 +333,32 @@ title: Active Spec
             expect(output).toContain('No active specification found');
         });
     });
+
+    describe('auto-update commands', () => {
+        it('memory command should update active spec', async () => {
+             const memoryPath = path.join(TEST_DIR, '.enokMethod/MEMORY.md');
+             const specPath = path.join(TEST_DIR, 'CURRENT_SPEC.md');
+             
+             // Setup: Memory says None, Spec exists
+             await fs.writeFile(memoryPath, 'Active Spec: None\n');
+             await fs.writeFile(specPath, '**Goal**: Test Spec');
+             
+             const output = runCLI('memory');
+             const content = await fs.readFile(memoryPath, 'utf8');
+             
+             expect(content).toContain('Active Spec: Test Spec');
+        });
+        
+        it('context command should run scan', async () => {
+            const contextPath = path.join(TEST_DIR, '.enokMethod/CONTEXT.md');
+            // Mock content
+            await fs.writeFile(contextPath, 'Language**: Java\n');
+            
+            const output = runCLI('context');
+            // Since tech stack detector runs, it usually finds "JavaScript" in our test env or similar
+            // We just check if it ran the logic
+            expect(output).toContain('Scanning project');
+            expect(output).toContain('Project Context');
+        });
+    });
 });
