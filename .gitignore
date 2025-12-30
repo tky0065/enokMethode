@@ -23,10 +23,11 @@ tests/test-project/
 # Build
 dist/
 
-# EnokMethod (keep templates and prompts)
-.enokMethod/
-!/.enokMethod/templates/
-!/.enokMethod/prompts/
+# EnokMethod - ignore user-generated files but track core templates
+.enokMethod/archive/
+.enokMethod/CONTEXT.md
+.enokMethod/MEMORY.md
+# Keep templates and prompts (they are core package files)
 
 # Temporary
 demo_test/
